@@ -27,14 +27,55 @@
     width: calc(100vw * 0.5);
     min-width: 400px;
     height: calc(100vw * 0.1);
-    filter: grayscale(100%);
+    filter: grayscale(100%) drop-shadow(0 0 0.5rem aqua);
     object-fit: cover;
     object-position: 50% 50%;
 }
 
 .HeaderByline {
     font-size: max(1.2vw, 17px);
-    font-style: italic;
-    color: #d2d2d2;
+    color: #ffffff;
     margin-top: 1rem;
+    filter: drop-shadow(0 0 0.5rem black);
+    padding-bottom: 100px;
+}
+
+.HeaderScrollButton:hover {
+    cursor: pointer;
+}
+
+.HeaderScrollButton svg {
+    width: 60px;
+    height: 72px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    bottom: calc(100vh * 0.05);
+    filter: drop-shadow(0 0 0.5rem black);
+}
+
+.HeaderScrollButton svg path {
+    stroke: #2994D1;
+    fill: transparent;
+    stroke-width: 3px;
+    animation: arrow 2s infinite;
+}
+
+@keyframes arrow {
+    0% {opacity:0}
+    40% {opacity:1}
+    80% {opacity:0}
+    100% {opacity:0}
+}
+
+.HeaderScrollButton svg path.ScrollArrow1 {
+    animation-delay: -1s;
+}
+
+.HeaderScrollButton svg path.ScrollArrow2 {
+    animation-delay: -0.5s;
+}
+
+.HeaderScrollButton svg path.ScrollArrow3 {
+    animation-delay: 0s;
 }
