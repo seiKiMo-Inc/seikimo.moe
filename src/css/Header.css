@@ -1,0 +1,40 @@
+.HeaderBackground {
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background-image: url("wallpaper.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    filter: brightness(0.5);
+    overflow-x: hidden;
+}
+
+.HeaderContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.HeaderLogo img {
+    width: calc(100vw * 0.5);
+    min-width: 400px;
+    height: calc(100vw * 0.1);
+    filter: grayscale(100%);
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.HeaderByline {
+    font-size: max(1.2vw, 17px);
+    font-style: italic;
+    color: #d2d2d2;
+    margin-top: 1rem;
+}
