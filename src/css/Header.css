@@ -8,7 +8,6 @@
     background-image: url("wallpaper.jpg");
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
     background-repeat: no-repeat;
     filter: brightness(0.5);
     overflow-x: hidden;
@@ -50,7 +49,7 @@
     left: 50%;
     transform: translateX(-50%);
     position: absolute;
-    bottom: calc(100vh * 0.05);
+    bottom: calc(100vh * 0.1);
     filter: drop-shadow(0 0 0.5rem black);
 }
 
