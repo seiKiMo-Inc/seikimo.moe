@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 let baseCss = `
     .snowflake {
+        z-index: 1;
         position: absolute;
         width: 10px;
         height: 10px;
