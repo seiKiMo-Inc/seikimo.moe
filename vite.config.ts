@@ -20,7 +20,7 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         emptyOutDir: true,
-        target: 'es5',
+        target: 'es2021',
         chunkSizeWarningLimit: 500
     }
 })
