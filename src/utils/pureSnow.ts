@@ -81,7 +81,7 @@ export function spawnSnowCSS(snowDensity = 200) {
     }
 
     for (let i = 1; i < snowDensity; i++) {
-        let randomX = (Math.random() * 100) - 3; // vw
+        let randomX = Math.random() * 100; // vw
         let randomOffset = Math.random() // vw;
         let randomXEnd = randomX + randomOffset;
         let randomXEndYoyo = randomX + (randomOffset / 2);
