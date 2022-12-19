@@ -36,14 +36,10 @@
     color: #ffffff;
     margin-top: 1rem;
     filter: drop-shadow(0 0 0.5rem black);
-    padding-bottom: 100px;
+    margin-bottom: 100px;
 }
 
-.HeaderScrollButton:hover {
-    cursor: pointer;
-}
-
-.HeaderScrollButton svg {
+.HeaderScroll svg {
     width: 60px;
     height: 72px;
     left: 50%;
@@ -53,7 +49,7 @@
     filter: drop-shadow(0 0 0.5rem black);
 }
 
-.HeaderScrollButton svg path {
+.HeaderScroll svg path {
     stroke: #2994D1;
     fill: transparent;
     stroke-width: 3px;
@@ -67,14 +63,14 @@
     100% {opacity:0}
 }
 
-.HeaderScrollButton svg path.ScrollArrow1 {
+.HeaderScroll svg path.ScrollArrow1 {
     animation-delay: -1s;
 }
 
-.HeaderScrollButton svg path.ScrollArrow2 {
+.HeaderScroll svg path.ScrollArrow2 {
     animation-delay: -0.5s;
 }
 
-.HeaderScrollButton svg path.ScrollArrow3 {
+.HeaderScroll svg path.ScrollArrow3 {
     animation-delay: 0s;
 }
