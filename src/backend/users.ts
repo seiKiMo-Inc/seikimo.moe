@@ -1,12 +1,12 @@
-import { Member } from '@backend/types';
-import { Constants } from "@backend/constants";
+import { Member } from '@backend/types'
 
 export async function getAllMembers(): Promise<Member[]> {
-    const response = await fetch(`https://api.github.com/orgs/${Constants.orgName}/members`, {
+    const response = await fetch(`https://api.arikatsu.lol/org`, {
         method: 'GET',
         headers: {
-            Accept: 'application/vnd.github.v3+json'
+            'Content-Type': 'application/json',
         }
     });
-    return await response.json()
+
+    return await response.json();
 }
