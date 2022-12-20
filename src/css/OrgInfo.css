@@ -1,9 +1,14 @@
+@font-face {
+    font-family: OstrichSansRounded;
+    src: url('OstrichSansRounded-Medium.otf');
+}
+
 .OrgInfo {
     border: 1px solid transparent;
 }
 
 .OrgInfoDescription {
-    font-family: "Ostrich Sans Rounded", sans-serif;
+    font-family: OstrichSansRounded, sans-serif;
     letter-spacing: 20px;
     text-align: center;
     font-size: 50px;
