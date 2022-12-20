@@ -35,3 +35,10 @@
     filter: brightness(0.7);
     transition: 0.2s ease-in-out;
 }
+
+@media (max-width: 830px) {
+    .FooterContent {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
