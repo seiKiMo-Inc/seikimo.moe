@@ -23,7 +23,7 @@ class OrgMembers extends React.Component<any, IState> {
     }
 
     handleScrollAnimation = (elements: Element[]) => {
-        const observer = new IntersectionObserver((entries) => {
+        const io = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add("show");
@@ -31,9 +31,9 @@ class OrgMembers extends React.Component<any, IState> {
             });
         });
 
-        elements.forEach((element) => {
-            observer.observe(element);
-        });
+        for (const element of elements) {
+            io.observe(element);
+        }
     }
 
     async componentDidMount() {
