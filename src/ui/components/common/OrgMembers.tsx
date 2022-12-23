@@ -22,7 +22,9 @@ class OrgMembers extends React.Component<any, IState> {
         window.open(member.html_url, "_blank");
     }
 
-    handleScrollAnimation = (elements: Element[]) => {
+    handleScrollAnimation = () => {
+        const elements = Array.from(document.getElementsByClassName("OrgInfoMember"));
+        console.log("fired all elements" + elements);
         const io = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -31,16 +33,20 @@ class OrgMembers extends React.Component<any, IState> {
             });
         });
 
-        for (const element of elements) {
+        elements.forEach((element) => {
+            console.log("observing " + element);
             io.observe(element);
-        }
+        });
     }
 
-    async componentDidMount() {
-        this.setState({ members: await getAllMembers() });
+    componentDidMount() {
+        getAllMembers().then((members) => {
+            this.setState({ members });
+        });
+    }
 
-        const elements = Array.from(document.getElementsByClassName("OrgInfoMember"));
-        this.handleScrollAnimation(elements);
+    componentDidUpdate() {
+        this.handleScrollAnimation();
     }
 
     render() {
