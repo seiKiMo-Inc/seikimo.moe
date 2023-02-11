@@ -89,7 +89,7 @@
         </style>
     </head>
 
-    <body>
+    <body onload="">
         <div id="placeholderBG"></div>
         <div id="bars">
             <span></span>
@@ -98,6 +98,13 @@
             <span></span>
             <span></span>
         </div>
+
+        <script>
+            if (window.location.pathname !== "/") {
+                document.getElementById("placeholderBG").style.display = "none";
+                document.getElementById("bars").style.display = "none";
+            }
+        </script>
         
         <noscript>You need to enable JavaScript to run this app.</noscript>
         
