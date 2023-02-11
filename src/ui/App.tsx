@@ -1,29 +1,44 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import Header from "@components/Header";
-import OrgInfo from "@components/OrgInfo";
-import Footer from "@components/Footer";
-import MusicWidget from "@components/common/MusicWidget";
+import LandingPage from "@pages/LandingPage";
+import LaudiolinPrivacy from "@pages/LaudiolinPrivacy";
 
 import '@css/App.css';
 
 class App extends React.Component {
-    async componentDidMount() {
-        const startLoader = document.getElementById("bars") as HTMLDivElement;
-        const startBG = document.getElementById("placeholderBG") as HTMLDivElement;
-
-        startLoader.style.display = "none";
-        startBG.style.display = "none";
-    }
+    // connectToWebsocket() {
+    //     const message = {
+    //         _id: 1,
+    //         username: "test user" + Math.random(),
+    //         message: "Hello from client" + Math.random(),
+    //         timestamp: new Date().getTime()
+    //     }
+    //
+    //     const socket = new WebSocket("ws://localhost:3000/socket");
+    //
+    //     socket.onopen = () => {
+    //         console.log("Connected to websocket");
+    //         socket.send(JSON.stringify(message));
+    //     }
+    //
+    //     socket.onmessage = (message) => {
+    //         console.log(message);
+    //     }
+    //
+    //     socket.onclose = () => {
+    //         console.log("Disconnected from websocket");
+    //     }
+    // }
 
     render() {
         return (
-            <div className="App">
-                <Header />
-                <OrgInfo />
-                <Footer />
-                <MusicWidget />
-            </div>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/laudiolin-privacy" element={<LaudiolinPrivacy />} />
+                </Routes>
+            </Router>
         );
     }
 }
