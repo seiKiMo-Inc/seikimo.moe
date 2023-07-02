@@ -1,28 +1,24 @@
-import { defineConfig } from 'vite'
-import reactRefresh from '@vitejs/plugin-react-refresh'
+// noinspection JSUnusedGlobalSymbols
+
+import { defineConfig } from "vite";
+
+import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+import postcss from "./cfg/postcss.config";
 
 export default defineConfig({
-    plugins: [reactRefresh()],
-
-    resolve: {
-        alias: {
-            "@app": "/src",
-            "@components": "/src/ui/components",
-            "@pages": "/src/ui/pages",
-            "@utils": "/src/utils",
-            "@css": "/src/css",
-            "@backend": "/src/backend",
-        }
-    },
+    plugins: [react(), tsconfigPaths()],
+    css: {postcss},
 
     server: {
         port: 1420
     },
 
     build: {
-        outDir: 'dist',
+        outDir: "dist",
         emptyOutDir: true,
-        target: 'es2021',
+        target: "es2021",
         chunkSizeWarningLimit: 500
     }
 })
