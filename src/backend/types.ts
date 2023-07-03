@@ -17,4 +17,9 @@ export type Member = {
     received_events_url: string
     type: string
     site_admin: boolean
-}
+};
+
+export type Message = {
+    sender: string;
+    text: string;
+};

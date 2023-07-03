@@ -4,6 +4,7 @@ import Header from "@components/Header";
 import OrgInfo from "@components/OrgInfo";
 import Footer from "@components/Footer";
 import MusicWidget from "@components/common/MusicWidget";
+import ChatWidget from "@components/common/ChatWidget";
 
 class LandingPage extends React.Component {
     componentDidMount() {
@@ -21,6 +22,7 @@ class LandingPage extends React.Component {
                 <OrgInfo />
                 <Footer />
                 <MusicWidget />
+                <ChatWidget />
             </div>
         );
     }
