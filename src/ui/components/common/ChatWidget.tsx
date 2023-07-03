@@ -1,11 +1,16 @@
 import React from "react";
 
+import { AiOutlineClose } from "react-icons/ai";
+import { BsFillChatDotsFill } from "react-icons/bs";
+
 import type { Message } from "@backend/types";
 import { chatSocket } from "@backend/sockets";
 
 import "@css/ChatWidget.scss";
 
 interface IState {
+    collapsed: boolean;
+
     error: string;
     message: string;
     showChat: boolean;
@@ -19,6 +24,8 @@ class ChatWidget extends React.Component<{}, IState> {
         super(props);
 
         this.state = {
+            collapsed: true,
+
             error: "",
             message: "",
             showChat: false,
@@ -70,6 +77,13 @@ class ChatWidget extends React.Component<{}, IState> {
      */
     private setError(error: string): void {
         this.setState({ error });
+    }
+
+    /**
+     * Closes (or opens) the chat.
+     */
+    private close(): void {
+        this.setState({ collapsed: !this.state.collapsed });
     }
 
     componentDidMount() {
@@ -133,10 +147,23 @@ class ChatWidget extends React.Component<{}, IState> {
     }
 
     render() {
+        if (this.state.collapsed) return (
+            <div
+                className={"CollapsedChat"}
+                onClick={this.close.bind(this)}
+            >
+                <BsFillChatDotsFill className={"Icon"} />
+            </div>
+        );
+
         const { messages } = this.state;
 
         return this.state.showChat ? (
             <div className={"ChatWidget"}>
+                <div className={"Close"} onClick={this.close.bind(this)}>
+                    <AiOutlineClose className={"Icon"} />
+                </div>
+
                 <div className={"Messages"}>
                     {
                         messages.length == 0 ?
@@ -173,6 +200,10 @@ class ChatWidget extends React.Component<{}, IState> {
             </div>
         ) : (
             <div className={"UsernameWidget"}>
+                <div className={"Close"} onClick={this.close.bind(this)}>
+                    <AiOutlineClose className={"Icon"} />
+                </div>
+
                 <p>Enter your username below.</p>
                 <p className={"text-red-500 text-center"}>{this.state.error}</p>
                 <input

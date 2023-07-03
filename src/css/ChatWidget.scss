@@ -1,3 +1,27 @@
+.CollapsedChat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #323d44;
+    border-radius: 100%;
+
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+
+    width: 54px;
+    height: 54px;
+
+    .Icon {
+        font-size: 32px;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 .UsernameWidget {
     display: flex;
     border-radius: 10px;
@@ -32,6 +56,23 @@
 }
 
 /* Below is the code for the chat portion. */
+
+.Close {
+    display: flex;
+    position: absolute;
+
+    top: 4px;
+    right: 4px;
+    left: auto;
+
+    .Icon {
+        font-size: 16px;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
 
 .ChatWidget {
     display: flex;
