@@ -24,7 +24,6 @@ class OrgMembers extends React.Component<any, IState> {
 
     handleScrollAnimation = () => {
         const elements = Array.from(document.getElementsByClassName("OrgInfoMember"));
-        console.log("fired all elements" + elements);
         const io = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -34,7 +33,6 @@ class OrgMembers extends React.Component<any, IState> {
         });
 
         elements.forEach((element) => {
-            console.log("observing " + element);
             io.observe(element);
         });
     }

@@ -86,6 +86,7 @@ class MusicWidget extends React.Component<any, IState> {
                         {this.state.isPlaying ? this.pauseIconSVG() : this.playIconSVG()}
                     </div>
                 </div>
+
                 <div className="MusicWidgetDetails">
                     <p className="MusicWidgetTitle" onClick={this.redirectToAudioSource}>Replica [レプリカ]</p>
                     <p className="MusicWidgetArtist">Keigo Hoashi</p>
