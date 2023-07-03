@@ -20,6 +20,8 @@
     &:hover {
         cursor: pointer;
     }
+
+    user-select: none;
 }
 
 .UsernameWidget {
@@ -53,6 +55,8 @@
     input:focus {
         outline: none;
     }
+
+    user-select: none;
 }
 
 /* Below is the code for the chat portion. */
@@ -104,8 +108,6 @@
     height: 100%;
 
     margin: 2px;
-
-    user-select: none;
 }
 
 .Messages .Message {
