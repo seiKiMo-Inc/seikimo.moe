@@ -9,6 +9,7 @@ interface IProps {
     id: string;
     file: File | null;
     progress: number;
+    decryptKey: string;
 }
 
 class FileUpload extends React.Component<IProps> {
@@ -52,7 +53,7 @@ class FileUpload extends React.Component<IProps> {
         const { file } = this.props;
         if (!file) return undefined;
 
-        const url = newCall(`c/${this.props.id}`);
+        const url = newCall(`file/${this.props.id}#${this.props.decryptKey}`);
 
         return (
             <div className={"FileUpload"}>
@@ -76,19 +77,19 @@ class FileUpload extends React.Component<IProps> {
                             </div>
                         </div>
 
-                        <input readOnly type={"text"} id={"link"} className={"FileUpload_Link"}
-                               value={`https://seikimo.moe/c/${this.props.id}`}
+                        <input readOnly type={"text"} value={url}
+                               id={"link"} className={"FileUpload_Link"}
                                onClick={(event) =>
                                    (event.target as HTMLInputElement).select()} />
                     </>
 
-                    <CopyIcon
+                    {this.props.id.length > 0 && <CopyIcon
                         className={"FileUpload_Icon"}
                         onClick={() => {
                             navigator.clipboard.writeText(url)
                                 .catch(console.error);
                         }}
-                    />
+                    />}
                 </div>
             </div>
         );

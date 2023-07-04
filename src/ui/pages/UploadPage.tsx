@@ -5,11 +5,14 @@ import FileUpload from "@components/common/FileUpload";
 import axios from "axios";
 import { newCall } from "@app/index";
 
+import * as crypto from "@backend/crypto";
+
 import "@css/UploadPage.scss";
 
 type UploadInfo = {
     id: string;
     file: File;
+    key: string;
     progress: number;
 };
 
@@ -109,8 +112,37 @@ class UploadPage extends React.Component<IProps, IState> {
 
     /**
      * Invoked when the user clicks the upload button.
+     *
+     * @param file The file to upload.
      */
     private async uploadFile(file: File) {
+        // Generate a new encryption key.
+        const key = await crypto.generateKey();
+        const keyStr = await crypto.exportKey(key);
+
+        // Create a new file reader.
+        const reader = new FileReader();
+        await new Promise<void>((resolve, reject) => {
+            reader.onload = async (event) => {
+                const data = event.target?.result;
+                if (data) {
+                    // Encrypt the file.
+                    const encrypted = await crypto.encrypt(
+                        data as ArrayBuffer, key);
+
+                    // Create a new file.
+                    file = new File([encrypted], file.name, {
+                        type: file.type
+                    });
+
+                    resolve();
+                } else {
+                    reject();
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
         let index = -1; try {
             // Perform a preflight to check if the user can upload.
             const preflight = await axios.request({
@@ -130,6 +162,7 @@ class UploadPage extends React.Component<IProps, IState> {
             const uploadInfo: UploadInfo = {
                 id: "",
                 file,
+                key: keyStr,
                 progress: 0
             };
 
@@ -215,7 +248,7 @@ class UploadPage extends React.Component<IProps, IState> {
 
                         {
                             uploads.map((upload, index) =>
-                                <FileUpload key={index} id={upload.id}
+                                <FileUpload key={index} id={upload.id} decryptKey={upload.key}
                                             file={upload.file} progress={upload.progress} />
                             )
                         }
