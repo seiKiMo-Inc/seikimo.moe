@@ -1,0 +1,73 @@
+.UploadPage {
+    @apply flex flex-row justify-between;
+    @apply w-screen h-screen;
+
+    padding: 20px;
+}
+
+.UploadPage_Mosaic {
+    @apply flex flex-col self-center;
+    @apply w-full h-full;
+    @apply bg-gray-100;
+
+    max-width: 20%;
+    max-height: 99%;
+
+    display: none;
+}
+
+.UploadPage_Content {
+    @apply flex flex-col items-center;
+    @apply w-full h-full;
+
+    margin-top: 20px;
+}
+
+.UploadPage_Header {
+    @apply flex flex-col;
+    @apply text-center;
+}
+
+.UploadPage_Dialogue {
+    @apply flex flex-col justify-center;
+    @apply w-full h-full;
+
+    gap: 20px;
+    max-width: 600px;
+    max-height: 256px;
+
+    margin-top: 20px;
+
+    border-radius: 15px;
+    background-color: #d9d9d9;
+    border: 5px solid rgba(41, 148, 209, 0.75);
+
+    &:hover {
+        border: 5px solid rgba(41, 148, 209, 1);
+    }
+}
+
+.UploadPage_Uploads {
+    @apply flex flex-col gap-3;
+
+    margin-top: 20px;
+}
+
+.UploadPage_Select {
+    @apply self-center;
+    @apply text-xl font-semibold;
+
+    width: 140px;
+    height: 35px;
+    border-radius: 5px;
+
+    background-color: #2994d1;
+
+    &:hover {
+        filter: brightness(0.95);
+    }
+}
+
+#upload {
+    @apply hidden;
+}

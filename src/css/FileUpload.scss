@@ -1,0 +1,82 @@
+.FileUpload {
+    @apply place-self-center;
+    @apply flex flex-row justify-between items-center;
+    @apply w-full h-full;
+
+    width: 500px;
+    max-height: 42px;
+    border-radius: 5px;
+
+    border: 3px solid #3B1D65;
+    background: #7245E8;
+}
+
+.FileUpload_Name {
+    padding: 10px 0 10px 7px;
+
+    user-select: none;
+    &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+.FileUpload_Data {
+    @apply flex flex-row items-center;
+
+    gap: 15px;
+}
+
+.FileUpload_Progress {
+    @apply flex flex-row items-center;
+
+    width: 190px;
+    height: 5px;
+}
+
+.FileUpload_Bar {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    background-color: #d9d9d9;
+}
+
+.FileUpload_Background {
+    @apply w-full h-full;
+    border-radius: 100px;
+    background-color: #0ca1ae;
+}
+
+.FileUpload_Link {
+    @apply hidden text-center;
+
+    width: 190px;
+    height: 30px;
+
+    font-size: 13px;
+    line-height: 22px;
+
+    border-radius: 5px;
+    background-color: #0d0e0e;
+
+    color: white;
+    padding: 5px 3px 5px 3px;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.FileUpload_Icon {
+    padding-right: 8px;
+
+    width: 30px;
+    height: 31px;
+
+    filter: invert(100%) sepia(1%) saturate(7500%)
+    hue-rotate(88deg) brightness(104%) contrast(104%);
+
+    &:hover {
+        cursor: pointer;
+    }
+}

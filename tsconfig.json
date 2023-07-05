@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2022",
     "lib": [
       "dom",
       "dom.iterable",
@@ -24,11 +24,12 @@
     "baseUrl": ".",
     "paths": {
       "@app/*": ["src/*"],
+      "@icons/*": ["src/ui/icons/*"],
       "@components/*": ["src/ui/components/*"],
       "@pages/*": ["src/ui/pages/*"],
       "@utils/*": ["src/utils/*"],
       "@css/*": ["src/css/*"],
-      "@backend/*": ["src/backend/*"],
+      "@backend/*": ["src/backend/*"]
     }
   },
 
