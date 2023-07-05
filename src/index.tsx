@@ -3,7 +3,12 @@ import ReactDOM from "react-dom/client";
 
 import App from "@app/ui/App";
 
-export const development = false;
+/**
+ * Returns true if the current environment is a development environment.
+ */
+export function isDevelopment(): boolean {
+    return true;
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
