@@ -22,6 +22,7 @@ interface IProps {
 
 interface IState {
     uploads: UploadInfo[];
+    lastClipboard: number;
 }
 
 class UploadPage extends React.Component<IProps, IState> {
@@ -29,7 +30,8 @@ class UploadPage extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            uploads: []
+            uploads: [],
+            lastClipboard: Date.now()
         };
     }
 
@@ -63,21 +65,55 @@ class UploadPage extends React.Component<IProps, IState> {
     private async onDropItems(event: React.DragEvent<HTMLDivElement>) {
         event.preventDefault();
 
-        const files = event.dataTransfer.files;
+        const dataTransfer = event.dataTransfer;
+        if (!dataTransfer) return;
+
+        await this.uploadItems(dataTransfer.files, dataTransfer.items);
+    }
+
+    /**
+     * Invoked when the user pastes something onto the page.
+     *
+     * @param event The event that triggered this function.
+     */
+    private async onPaste(event: ClipboardEvent) {
+        if (this.state.lastClipboard + 100 > Date.now()) return;
+        this.setState({ lastClipboard: Date.now() });
+
+        const clipboard = event.clipboardData;
+        if (!clipboard) return;
+
+        await this.uploadItems(clipboard.files, clipboard.items);
+    }
+
+    /**
+     * Invoked when the user clicks the select file button.
+     *
+     * @param files The files to upload.
+     * @param items The items to upload.
+     */
+    private async uploadItems(files: FileList | undefined, items: DataTransferItemList | undefined) {
+        const uploadedFiles: File[] = [];
+
         if (files) {
             const targetFile = files.item(0);
-            targetFile && await this.uploadFile(targetFile);
+            if (targetFile && !uploadedFiles.includes(targetFile)) {
+                uploadedFiles.push(targetFile);
+                await this.uploadFile(targetFile);
+            }
         }
 
-        const items = event.dataTransfer.items;
         if (items) {
             for (const item of items) {
                 if (item.kind == "file") {
                     const file = item.getAsFile();
-                    if (file) {
-                        await this.uploadFile(file);
-                        break;
-                    }
+                    if (!file) continue;
+
+                    // Check if the file has already been uploaded.
+                    if (uploadedFiles.includes(file)) continue;
+                    uploadedFiles.push(file);
+
+                    await this.uploadFile(file);
                 }
             }
         }
@@ -206,6 +242,12 @@ class UploadPage extends React.Component<IProps, IState> {
 
     componentDidMount() {
         this.updateMosaic();
+
+        document.addEventListener("paste", this.onPaste.bind(this));
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("paste", this.onPaste.bind(this));
     }
 
     render() {
