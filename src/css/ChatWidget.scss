@@ -27,13 +27,13 @@
 .UsernameWidget {
     display: flex;
     border-radius: 10px;
+    border: #2c6fc4 2px solid;
 
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
 
-    width: 30%;
-    max-width: 280px;
+    width: 280px;
 
     padding: 4px;
     box-sizing: border-box;
@@ -41,15 +41,17 @@
     position: fixed;
     bottom: 20px;
     left: 20px;
+    right: 20px;
 
-    color: black;
-    background-color: white;
+    color: white;
+    background-color: #061538;
 
     gap: 5px;
 
     input {
         width: 50%;
         text-align: center;
+        background-color: #061538;
     }
 
     input:focus {
@@ -81,13 +83,13 @@
 .ChatWidget {
     display: flex;
     border-radius: 10px;
+    border: #2c6fc4 2px solid;
 
     flex-direction: column;
     justify-content: space-between;
 
-    width: 30%;
-    height: 30%;
-    max-width: 280px;
+    width: 380px;
+    height: 400px;
 
     padding: 4px;
     box-sizing: border-box;
@@ -96,8 +98,8 @@
     bottom: 20px;
     left: 20px;
 
-    color: black;
-    background-color: white;
+    color: white;
+    background-color: #061538;
 }
 
 .ChatWidget .Messages {
@@ -123,9 +125,20 @@
 
 .MessageBox_Input {
     width: 100%;
-    margin-left: 2px;
+    background-color: #061538;
 }
 
 .MessageBox_Input:focus {
     outline: none;
+}
+
+@media screen and (max-width: 400px) {
+    .UsernameWidget {
+        width: calc(100% - 40px);
+    }
+
+    .ChatWidget {
+        width: calc(100% - 40px);
+        height: calc(50%);
+    }
 }
