@@ -1,0 +1,98 @@
+.PastePage {
+    @apply flex flex-col;
+    @apply h-full w-full;
+
+    padding: 20px;
+}
+
+.PastePage_Title {
+    @apply flex flex-col;
+    @apply items-center justify-center;
+}
+
+.PastePage_Info {
+    @apply flex flex-col items-center justify-center;
+
+    gap: 20px;
+}
+
+.PastePage_Field {
+    @apply flex flex-col;
+
+    width: 230px;
+
+    p {
+        @apply text-white text-2xl text-center;
+    }
+
+    input, select {
+        @apply text-black text-lg text-center;
+        @apply bg-gray-300;
+
+        height: 32px;
+        border-radius: 5px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}
+
+.PastePage_Submit {
+    @apply text-center text-white text-xl font-semibold;
+
+    width: 100px;
+    height: 35px;
+
+    background-color: #2994d1;
+    border-radius: 5px;
+}
+
+.PastePage_TextBox {
+    @apply text-white;
+    @apply bg-gray-800;
+
+    @apply p-1.5 text-sm w-full h-full;
+
+    min-width: 400px;
+    max-width: 70%;
+    min-height: 200px;
+    border-radius: 5px;
+
+    overflow-y: hidden;
+    display: flow-root;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.PastePage_Previous {
+    @apply flex flex-col items-center;
+    @apply h-full;
+
+    p {
+        @apply bg-gray-600 p-2;
+        border-radius: 5px;
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+
+    gap: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-blue-400;
+    border-radius: 4px;
+}

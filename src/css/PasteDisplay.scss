@@ -1,0 +1,18 @@
+.PasteDisplay {
+    @apply flex flex-col;
+    @apply h-full w-full;
+
+    padding: 20px;
+}
+
+.PasteDisplay_Title {
+    @apply flex flex-col;
+    @apply items-center justify-center;
+}
+
+.PasteDisplay_Content {
+    @apply flex flex-col self-center mt-5;
+    @apply h-full w-full;
+
+    max-width: 80%;
+}
