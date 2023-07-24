@@ -12,9 +12,7 @@ class OrgInfo extends React.Component {
                     <img src="wave.svg" alt="wave" />
                 </div>
                 <div className="OrgInfoDescription">
-                    <p>
-                        Members
-                    </p>
+                    <p>Members</p>
                 </div>
                 <OrgMembers />
             </div>

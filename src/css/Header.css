@@ -36,6 +36,8 @@
     margin-top: 1rem;
     filter: drop-shadow(0 0 0.5rem black);
     margin-bottom: 100px;
+
+    user-select: none;
 }
 
 .HeaderScroll svg {
