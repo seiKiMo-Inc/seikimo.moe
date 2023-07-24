@@ -18,7 +18,7 @@ class Header extends React.Component {
                 <div className="HeaderBackground" />
                 <div className="HeaderContent">
                     <div className="HeaderLogo">
-                        <img src="seikimo.png" alt="seiKiMo" />
+                        <img src="/seikimo.png" alt="seiKiMo" />
                     </div>
                     <div className="HeaderByline">
                         <p>Stupid Dumbasses Make Based Software</p>
