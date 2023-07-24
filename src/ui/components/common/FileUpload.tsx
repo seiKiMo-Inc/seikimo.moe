@@ -83,13 +83,14 @@ class FileUpload extends React.Component<IProps> {
                                    (event.target as HTMLInputElement).select()} />
                     </>
 
-                    {this.props.id.length > 0 && <CopyIcon
+                    <CopyIcon
                         className={"FileUpload_Icon"}
                         onClick={() => {
-                            navigator.clipboard.writeText(url)
-                                .catch(console.error);
+                            if (this.props.id.length > 1)
+                                navigator.clipboard.writeText(url)
+                                    .catch(console.error);
                         }}
-                    />}
+                    />
                 </div>
             </div>
         );
