@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "Poppins";
+    src: url(/fonts/Poppins-Regular.ttf);
+}
+
+@font-face {
+    font-family: "Poppins";
+    src: url(/fonts/Poppins-Medium.ttf);
+    font-weight: 500;
+}
+
 html {
     overflow-x: hidden;
 }
