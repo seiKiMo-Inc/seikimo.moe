@@ -32,6 +32,11 @@ export type Paste = {
     codeType: string;
 };
 
+export type AccountCredentials = {
+    username: string;
+    token: string;
+};
+
 export type OldPaste = {
     id: string;
     name: string;

@@ -4,18 +4,19 @@ import { ReactComponent as GoogleIcon } from "@icons/google.svg";
 
 import RouterComponent from "@components/common/RouterComponent";
 
+import { newCall } from "@app/index";
+import { sha256str } from "@utils/general";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
+import type { AccountCredentials } from "@backend/types";
 
 import "@css/LoginPage.scss";
-import { sha256str } from "@utils/general";
 
 interface IProps {
-    service?: string;
     params: any;
 }
 
 interface IState {
-    email: string;
+    username: string;
     password: string;
 }
 
@@ -24,7 +25,7 @@ class LoginPage extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            email: "",
+            username: "",
             password: ""
         };
     }
@@ -33,9 +34,21 @@ class LoginPage extends React.Component<IProps, IState> {
      * Gets the service from the URL.
      */
     private getService(): string {
-        return this.props.service ??
-            this.props.params.srv ??
-            "Account";
+        const url = new URL(window.location.href);
+        const appName = url.searchParams.get("app");
+
+        return appName ?? this.props.params.srv ?? "Account";
+    }
+
+    /**
+     * Reads the 'redirect' query parameter.
+     * Defaults to 'seikimo.moe/'.
+     */
+    private getRedirectUrl(): string {
+        const url = new URL(window.location.href);
+        const redirect = url.searchParams.get("redirect");
+
+        return redirect ?? "https://seikimo.moe/";
     }
 
     /**
@@ -44,14 +57,34 @@ class LoginPage extends React.Component<IProps, IState> {
     private async login(event: React.FormEvent<HTMLFormElement>): Promise<void> {
         event.preventDefault(); // Prevent the form from submitting.
 
-        console.log(this.state)
+        try {
+            const response = await fetch(newCall("account/login"), {
+                method: "POST", body: JSON.stringify(this.state)
+            });
+
+            // Check if the login was successful.
+            if (response.status != 200) {
+                // TODO: Display login error.
+                return;
+            }
+
+            // Parse the response.
+            const data = await response.json() as AccountCredentials;
+            // Store the credentials in the session.
+            localStorage.setItem("credentials", JSON.stringify(data));
+
+            // Redirect to the redirect URL.
+            window.location.href = this.getRedirectUrl();
+        } catch (e) {
+            // TODO: Display login error.
+        }
     }
 
     /**
-     * Changes the email state.
+     * Changes the username state.
      */
-    private updateEmail(event: React.ChangeEvent<HTMLInputElement>): void {
-        this.setState({ email: event.target.value });
+    private updateUsername(event: React.ChangeEvent<HTMLInputElement>): void {
+        this.setState({ username: event.target.value });
     }
 
     /**
@@ -84,8 +117,8 @@ class LoginPage extends React.Component<IProps, IState> {
 
                     <div className={"LoginPage_Form"}>
                         <form onSubmit={this.login.bind(this)}>
-                            <input type={"email"} placeholder={"Email"}
-                                   autoComplete={"yes"} onChange={this.updateEmail.bind(this)} />
+                            <input type={"text"} placeholder={"Username/Email"}
+                                   autoComplete={"yes"} onChange={this.updateUsername.bind(this)} />
                             <input type={"password"} placeholder={"Password"}
                                    autoComplete={"yes"} onChange={this.updatePassword.bind(this)} />
                             <button>Log in</button>
