@@ -1,6 +1,6 @@
 import React from "react";
 
-import { spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
+import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 
 import "@css/Header.css";
 
@@ -10,8 +10,8 @@ class Header extends React.Component {
             <div
                 className="Header"
                 onLoad={() => {
-                    spawnSnow(200, document.getElementById("snow") as HTMLDivElement);
-                    spawnSnowCSS();
+                    spawnSnow(defaultDensity, document.getElementById("snow") as HTMLDivElement);
+                    spawnSnowCSS(defaultDensity, "Header");
                 }}
             >
                 <div id="snow"></div>

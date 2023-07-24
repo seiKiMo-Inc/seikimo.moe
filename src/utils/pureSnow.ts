@@ -24,6 +24,10 @@ THE SOFTWARE.
 
 // I MODIFIED SOME BITS OF THE CODE TO MAKE IT WORK WITH MY PROJECT
 
+import { isOnMobile } from "@utils/general";
+
+export const defaultDensity = isOnMobile() ? 50 : 200;
+
 let baseCss = `
     .snowflake {
         z-index: 1;
@@ -37,7 +41,7 @@ let baseCss = `
 `;
 
 // Creating snowflakes
-export function spawnSnow(snowDensity = 200, snowDiv: HTMLDivElement) {
+export function spawnSnow(snowDensity = defaultDensity, snowDiv: HTMLDivElement) {
     snowDensity -= 1;
 
     for (let x = 0; x < snowDensity; x++) {
@@ -71,8 +75,8 @@ function getRandomArbitrary(min: number, max: number) {
 }
 
 // Create style for snowflake
-export function spawnSnowCSS(snowDensity = 200) {
-    let bodyHeightPx = document.getElementsByClassName("Header")[0].scrollHeight;
+export function spawnSnowCSS(snowDensity = defaultDensity, className: string) {
+    let bodyHeightPx = document.getElementsByClassName(className)[0].scrollHeight;
     let pageHeightVH = (100 * bodyHeightPx / window.innerHeight);
     let snowflakeName = "snowflake";
     let rule = ``;
@@ -105,7 +109,7 @@ export function spawnSnowCSS(snowDensity = 200) {
             to {
                 transform: translate(${randomXEndYoyo}vw, ${pageHeightVH}vh) scale(${randomScale});
             }
-            
+
         }
         `
     }

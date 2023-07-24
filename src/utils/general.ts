@@ -80,3 +80,10 @@ export function base64Encode(buffer: ArrayBuffer): string {
 
     return base64;
 }
+
+/**
+ * Checks if the user is on a mobile device.
+ */
+export function isOnMobile(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
