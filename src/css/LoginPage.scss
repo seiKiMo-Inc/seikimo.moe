@@ -2,6 +2,7 @@
     @apply flex;
     @apply w-full h-screen;
 
+    overflow: hidden;
     font-family: Poppins, sans-serif;
 }
 
@@ -33,6 +34,7 @@
     border-radius: 10px;
 
     background-color: #262626;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .LoginPage_Header {
@@ -40,16 +42,19 @@
     @apply items-center;
 
     gap: 10px;
+    height: 70px;
 
     :nth-child(1) {
-        @apply text-[32px] font-medium;
+        @apply text-[30px] font-medium;
+        line-height: 35px;
     }
 
     :nth-child(2) {
         @apply text-lg font-medium;
+        height: 25px;
     }
 
-    padding-bottom: 20px;
+    margin-bottom: 20px;
     user-select: none;
 }
 

@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
+import { applyToWindow } from "@utils/general";
+
 import App from "@app/ui/App";
 
 /**
@@ -20,6 +22,7 @@ export function newCall(route: string): string {
         "http://localhost:3000" :
         "https://seikimo.moe"}/${route}`;
 }
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -29,3 +32,5 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+applyToWindow();

@@ -7,6 +7,7 @@ import RouterComponent from "@components/common/RouterComponent";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 
 import "@css/LoginPage.scss";
+import { sha256str } from "@utils/general";
 
 interface IProps {
     service?: string;
@@ -14,14 +15,18 @@ interface IProps {
 }
 
 interface IState {
-
+    email: string;
+    password: string;
 }
 
 class LoginPage extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            email: "",
+            password: ""
+        };
     }
 
     /**
@@ -33,9 +38,35 @@ class LoginPage extends React.Component<IProps, IState> {
             "Account";
     }
 
+    /**
+     * Attempts to log in.
+     */
+    private async login(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+        event.preventDefault(); // Prevent the form from submitting.
+
+        console.log(this.state)
+    }
+
+    /**
+     * Changes the email state.
+     */
+    private updateEmail(event: React.ChangeEvent<HTMLInputElement>): void {
+        this.setState({ email: event.target.value });
+    }
+
+    /**
+     * Changes the password state.
+     * Automatically hashes the password.
+     */
+    private async updatePassword(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
+        this.setState({ password: await sha256str(event.target.value) });
+    }
+
     componentDidMount() {
-        spawnSnow(defaultDensity, document.getElementById("snow") as HTMLDivElement);
-        spawnSnowCSS(defaultDensity, "LoginPage");
+        window.onload = () => {
+            spawnSnow(defaultDensity, document.getElementById("snow") as HTMLDivElement);
+            spawnSnowCSS(defaultDensity, "LoginPage");
+        };
     }
 
     render() {
@@ -47,14 +78,18 @@ class LoginPage extends React.Component<IProps, IState> {
 
                 <div className={"LoginPage_Container"}>
                     <div className={"LoginPage_Header"}>
-                        <p className={"h-[35px]"}>Sign in</p>
+                        <p>Sign in</p>
                         <p>to continue to {this.getService()}</p>
                     </div>
 
                     <div className={"LoginPage_Form"}>
-                        <input type={"email"} placeholder={"Email"} />
-                        <input type={"password"} placeholder={"Password"} />
-                        <button>Log in</button>
+                        <form onSubmit={this.login.bind(this)}>
+                            <input type={"email"} placeholder={"Email"}
+                                   autoComplete={"yes"} onChange={this.updateEmail.bind(this)} />
+                            <input type={"password"} placeholder={"Password"}
+                                   autoComplete={"yes"} onChange={this.updatePassword.bind(this)} />
+                            <button>Log in</button>
+                        </form>
                     </div>
 
                     <div className={"LoginPage_Divider"}>

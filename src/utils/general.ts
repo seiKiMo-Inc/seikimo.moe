@@ -87,3 +87,36 @@ export function base64Encode(buffer: ArrayBuffer): string {
 export function isOnMobile(): boolean {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
+
+/**
+ * Performs a SHA256 operation on a string or buffer.
+ *
+ * @param data The data to hash.
+ */
+export async function sha256(data: ArrayBuffer | string): Promise<ArrayBuffer> {
+    return await crypto.subtle.digest("SHA-256",
+        data instanceof ArrayBuffer ?
+            data : new TextEncoder().encode(data));
+}
+
+/**
+ * Performs a SHA256 operation on a string.
+ * Converts the result into a hex string.
+ *
+ * @param data The data to hash.
+ */
+export async function sha256str(data: string): Promise<string> {
+    return Array.from(new Uint8Array(await sha256(data)))
+        .map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+/**
+ * Applies utility functions to the window object.
+ */
+export function applyToWindow(): void {
+    const win = window as any;
+
+    win.sha256 = sha256;
+    win.sha256str = sha256str;
+    win.base64Encode = base64Encode;
+}
