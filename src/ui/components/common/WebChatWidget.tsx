@@ -4,7 +4,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { BsFillChatDotsFill } from "react-icons/bs";
 
 import type { Message } from "@backend/types";
-import { chatSocket } from "@backend/sockets";
+import { webChatSocket } from "@backend/sockets";
 
 import "@css/ChatWidget.scss";
 
@@ -19,7 +19,7 @@ interface IState {
     messages: Message[];
 }
 
-class ChatWidget extends React.Component<{}, IState> {
+class WebChatWidget extends React.Component<{}, IState> {
     constructor(props: {}) {
         super(props);
 
@@ -41,8 +41,8 @@ class ChatWidget extends React.Component<{}, IState> {
      * @param message The message to send.
      */
     private sendMessage(message: any): void {
-        if (chatSocket.readyState == WebSocket.OPEN) {
-            chatSocket.send(JSON.stringify(message));
+        if (webChatSocket.readyState == WebSocket.OPEN) {
+            webChatSocket.send(JSON.stringify(message));
         }
     }
 
@@ -87,7 +87,7 @@ class ChatWidget extends React.Component<{}, IState> {
     }
 
     componentDidMount() {
-        chatSocket.onmessage = (event) => {
+        webChatSocket.onmessage = (event) => {
             try {
                 const message = JSON.parse(event.data);
                 switch (message.type) {
@@ -138,10 +138,10 @@ class ChatWidget extends React.Component<{}, IState> {
                 console.error("Failed to parse message from server.");
             }
         };
-        chatSocket.onopen = () => {
+        webChatSocket.onopen = () => {
             console.log("Connected to server.");
         }
-        chatSocket.onclose = () => {
+        webChatSocket.onclose = () => {
             this.addMessage(this.newServerMessage("Disconnected from server."));
         };
     }
@@ -226,4 +226,4 @@ class ChatWidget extends React.Component<{}, IState> {
     }
 }
 
-export default ChatWidget;
+export default WebChatWidget;

@@ -1,3 +1,3 @@
 import { newSocket } from "@utils/general";
 
-export const chatSocket = new WebSocket(newSocket("chat"));
+export const webChatSocket = new WebSocket(newSocket("webchat"));
