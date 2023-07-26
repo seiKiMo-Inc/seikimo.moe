@@ -6,7 +6,7 @@ import { BsFillChatDotsFill } from "react-icons/bs";
 import type { Message } from "@backend/types";
 import { webChatSocket } from "@backend/sockets";
 
-import "@css/ChatWidget.scss";
+import "@css/components/ChatWidget.scss";
 
 interface IState {
     collapsed: boolean;

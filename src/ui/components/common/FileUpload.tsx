@@ -2,8 +2,9 @@ import React from "react";
 
 import { ReactComponent as CopyIcon } from "@icons/copy-icon.svg";
 
-import "@css/FileUpload.scss";
 import { newCall } from "@app/index";
+
+import "@css/components/FileUpload.scss";
 
 interface IProps {
     id: string;

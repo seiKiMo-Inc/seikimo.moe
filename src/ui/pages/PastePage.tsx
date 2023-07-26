@@ -4,7 +4,7 @@ import { newCall } from "@app/index";
 import { Durations, Languages } from "@backend/types";
 import type { OldPaste } from "@backend/types";
 
-import "@css/PastePage.scss";
+import "@css/pages/PastePage.scss";
 
 interface IState {
     name: string;

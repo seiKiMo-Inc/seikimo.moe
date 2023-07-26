@@ -7,7 +7,7 @@ import RouterComponent from "@components/common/RouterComponent";
 import { newCall } from "@app/index";
 import type { Paste } from "@backend/types";
 
-import "@css/PasteDisplay.scss";
+import "@css/components/PasteDisplay.scss";
 
 interface IProps {
     params: any;

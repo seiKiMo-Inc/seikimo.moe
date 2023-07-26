@@ -9,7 +9,7 @@ import { sha256str } from "@utils/general";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 import type { AccountCredentials } from "@backend/types";
 
-import "@css/LoginPage.scss";
+import "@css/pages/LoginPage.scss";
 
 interface IProps {
     params: any;

@@ -7,7 +7,7 @@ import { newCall } from "@app/index";
 
 import * as crypto from "@backend/crypto";
 
-import "@css/UploadPage.scss";
+import "@css/pages/UploadPage.scss";
 
 type UploadInfo = {
     id: string;

@@ -1,6 +1,6 @@
 import React, {ReactNode} from "react";
 
-import "@css/MusicWidget.css";
+import "@css/components/MusicWidget.css";
 
 interface IState {
     isPlaying: boolean;
