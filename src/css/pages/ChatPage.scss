@@ -50,12 +50,12 @@
     max-width: 950px;
     max-height: 275px;
     padding: 10px 15px 10px 15px;
+    margin: 0 15px 10px 0;
 
     background-color: #1a1a1a;
     border-radius: 10px;
 
     resize: none;
-    margin-bottom: 10px;
 
     &:focus {
         outline: none;
