@@ -37,6 +37,37 @@ export type AccountCredentials = {
     token: string;
 };
 
+export type Profile = {
+    icon: string;
+    displayName: string;
+};
+
+export type Channel = {
+    id: string;
+    name: string;
+    icon: string;
+
+    members: Profile[];
+    lastMessages: ChatMessage[];
+    conversations: Conversation[];
+};
+
+export type Conversation = {
+    id: string;
+    name: string;
+
+    hasCall: boolean;
+    callParticipants: Profile[];
+
+    messages: ChatMessage[];
+};
+
+export type ChatMessage = {
+    sender: Profile;
+    content: string;
+    time: number;
+};
+
 export type OldPaste = {
     id: string;
     name: string;

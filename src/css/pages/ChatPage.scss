@@ -1,0 +1,75 @@
+.ChatPage {
+    @apply flex flex-row justify-between;
+    @apply h-screen w-full;
+
+    background-color: #262626;
+    font-family: Poppins, sans-serif;
+
+    /* Variables */
+
+    --width: 300px;
+    --pane-width: #191919;
+}
+
+.ChatPage_LeftPane {
+    @apply flex flex-col;
+    @apply h-full w-screen;
+
+    padding-top: 110px;
+
+    max-width: var(--width);
+    background-color: var(--pane-width);
+}
+
+.ChatPage_Content {
+    @apply flex flex-col;
+    @apply h-full w-full;
+
+    padding-left: 15px;
+}
+
+.ChatPage_MessageList {
+    @apply flex flex-col h-full;
+
+    overflow-y: scroll;
+    justify-content: flex-end;
+
+    padding-left: 10px;
+
+    gap: 2px;
+}
+
+.ChatPage_Message {
+    @apply relative flex flex-row w-full;
+    @apply text-white;
+
+    align-self: center;
+
+    height: 45px;
+    min-width: 300px;
+    max-width: 950px;
+    max-height: 275px;
+    padding: 10px 15px 10px 15px;
+
+    background-color: #1a1a1a;
+    border-radius: 10px;
+
+    resize: none;
+    margin-bottom: 10px;
+
+    &:focus {
+        outline: none;
+    }
+
+    &::placeholder {
+        color: #999;
+    }
+}
+
+.ChatPage_RightPane {
+    @apply flex flex-col;
+    @apply h-full w-screen;
+
+    max-width: var(--width);
+    background-color: var(--pane-width);
+}

@@ -1,0 +1,19 @@
+.Message {
+    @apply flex flex-row;
+    @apply w-full;
+
+    min-height: 50px;
+    max-width: 950px;
+}
+
+.Message_Icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 100px;
+
+    margin-right: 5px;
+}
+
+.Message_Content {
+    @apply flex flex-col;
+}

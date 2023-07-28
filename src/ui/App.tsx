@@ -3,12 +3,14 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import LandingPage from "@pages/LandingPage";
+import ChatPage from "@pages/ChatPage";
 import LoginPage from "@pages/LoginPage";
-import UploadPage from "@pages/UploadPage";
 import PastePage from "@pages/PastePage";
+import UploadPage from "@pages/UploadPage";
 import Donations from "@pages/Donations";
-import PasteDisplay from "@pages/PasteDisplay";
 import LaudiolinPrivacy from "@pages/LaudiolinPrivacy";
+
+import PasteDisplay from "@pages/PasteDisplay";
 
 import "@css/App.css";
 import "highlight.js/styles/github-dark.css";
@@ -19,8 +21,9 @@ class App extends React.PureComponent {
             <Router>
                 <Routes>
                     <Route path={"/"} element={<LandingPage />} />
-                    <Route path={"/paste"} element={<PastePage />} />
+                    <Route path={"/chat"} element={<ChatPage />} />
                     <Route path={"/login"} element={<LoginPage />} />
+                    <Route path={"/paste"} element={<PastePage />} />
                     <Route path={"/upload"} element={<UploadPage />} />
                     <Route path={"/donate"} element={<Donations />} />
                     <Route path={"/laudiolin-privacy"} element={<LaudiolinPrivacy />} />

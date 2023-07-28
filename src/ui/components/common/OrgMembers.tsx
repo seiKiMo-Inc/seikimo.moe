@@ -1,6 +1,6 @@
 import React from "react";
 
-import { getAllMembers } from "@backend/users";
+import { getAllMembers } from "@backend/user";
 import { Member } from "@backend/types";
 
 import "@css/OrgInfo.css";
