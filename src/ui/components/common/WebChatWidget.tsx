@@ -41,8 +41,8 @@ class WebChatWidget extends React.Component<{}, IState> {
      * @param message The message to send.
      */
     private sendMessage(message: any): void {
-        if (webChatSocket.readyState == WebSocket.OPEN) {
-            webChatSocket.send(JSON.stringify(message));
+        if (webChatSocket().readyState == WebSocket.OPEN) {
+            webChatSocket().send(JSON.stringify(message));
         }
     }
 
@@ -87,7 +87,7 @@ class WebChatWidget extends React.Component<{}, IState> {
     }
 
     componentDidMount() {
-        webChatSocket.onmessage = (event) => {
+        webChatSocket().onmessage = (event) => {
             try {
                 const message = JSON.parse(event.data);
                 switch (message.type) {
@@ -138,10 +138,10 @@ class WebChatWidget extends React.Component<{}, IState> {
                 console.error("Failed to parse message from server.");
             }
         };
-        webChatSocket.onopen = () => {
+        webChatSocket().onopen = () => {
             console.log("Connected to server.");
         }
-        webChatSocket.onclose = () => {
+        webChatSocket().onclose = () => {
             this.addMessage(this.newServerMessage("Disconnected from server."));
         };
     }
