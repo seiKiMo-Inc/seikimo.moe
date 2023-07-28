@@ -21,10 +21,7 @@ export function getCredentials(): AccountCredentials {
  */
 export async function getAllMembers(): Promise<Member[]> {
     const response = await fetch(MEMBERS_URL, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        method: 'GET', headers: { 'Content-Type': 'application/json', }
     });
 
     return await response.json();
