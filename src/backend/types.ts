@@ -65,7 +65,7 @@ export type Conversation = {
 export type ChatMessage = {
     sender: Profile;
     content: string;
-    time: number;
+    time: bigint;
 };
 
 export type OldPaste = {

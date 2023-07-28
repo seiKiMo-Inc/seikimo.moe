@@ -3,11 +3,14 @@ import React from "react";
 import Channel from "@components/chat/Channel";
 import Message from "@components/chat/Message";
 
+import { newCall } from "@app/index";
+import { chatSocket, encode } from "@backend/sockets";
 import { getCredentials } from "@backend/user";
 import type { ChatMessage, Channel as ChannelType, Conversation } from "@backend/types";
 
 import "@css/pages/ChatPage.scss";
-import { newCall } from "@app/index";
+import { AuthenticateCsReq, AuthenticateScRsp, MessageScNotify, PacketIds, Retcode } from "@backend/proto/ChatGateway";
+import { base64Decode } from "@utils/general";
 
 interface IProps {
 
@@ -62,6 +65,19 @@ class ChatPage extends React.Component<IProps, IState> {
         if (channel == -1) return null;
         // Get the selected channel.
         return channels[channel].conversations[conversation];
+    }
+
+    /**
+     * Fetches a conversation from the ID.
+     *
+     * @param channelId The ID of the channel.
+     * @param conversationId The ID of the conversation.
+     */
+    private getFrom(channelId: string, conversationId: string): Conversation | undefined {
+        const channel = this.state.channels.find(channel => channel.id == channelId);
+        if (!channel) return undefined;
+
+        return channel.conversations.find(conversation => conversation.id == conversationId);
     }
 
     /**
@@ -132,12 +148,89 @@ class ChatPage extends React.Component<IProps, IState> {
         messageBox.value = "";
     }
 
+    /**
+     * Authenticates with the server.
+     */
+    private authenticate(): void {
+        // Get the credentials.
+        const { token } = getCredentials();
+
+        // Authenticate with the server.
+        chatSocket().send(encode(PacketIds._AuthenticateCsReq,
+            AuthenticateCsReq.toBinary({ token })));
+    }
+
+    /**
+     * Invoked when a message is received.
+     *
+     * @param event The message event.
+     */
+    private receiveMessage(event: MessageEvent): void {
+        // Base64 decode the data.
+        const binary = base64Decode(event.data);
+
+        // Parse the data into a byte array.
+        const data = new Uint8Array(binary);
+        const view = new DataView(data.buffer);
+        // Check the size of the packet.
+        if (data.length < 8) return;
+
+        // Read the packet data.
+        const packetId = view.getInt32(0);
+        const packetLength = view.getInt32(4);
+        const packetData = data.slice(8, packetLength + 8);
+
+        // Handle the packet.
+        switch (packetId) {
+            case PacketIds._AuthenticateScRsp:
+                const { retcode } = AuthenticateScRsp.fromBinary(packetData);
+                if (retcode != Retcode.SUCCESS) {
+                    throw new Error("Failed to authenticate.");
+                }
+
+                return;
+            case PacketIds._MessageScNotify:
+                const { message, channelId, conversationId } =
+                    MessageScNotify.fromBinary(packetData);
+
+                // Ensure the message is valid.
+                if (!message) throw new Error("Invalid message.");
+
+                // Get the conversation.
+                const conversation = this.getFrom(channelId, conversationId);
+                if (conversation == undefined)
+                    throw new Error("Conversation not found.");
+
+                // Add the message.
+                conversation.messages.push({
+                    sender: {
+                        icon: message.sender?.icon ?? "",
+                        displayName: message.sender?.displayName ?? "",
+                    },
+                    content: message.content,
+                    time: message.timestamp
+                });
+
+                // Update the user interface.
+                this.forceUpdate();
+                return;
+        }
+    }
+
     componentDidMount() {
         this.updateMessageBox();
 
+        // Load over HTTP.
         this.loadChannels()
             .then(() => console.log("All channels loaded."))
             .catch(console.error);
+
+        // Instantiate the websocket.
+        const socket = chatSocket();
+        socket.onopen = this.authenticate;
+        socket.onmessage = this.receiveMessage.bind(this);
+        socket.onclose = () => {};
+        socket.onerror = () => {};
     }
 
     render() {

@@ -82,6 +82,21 @@ export function base64Encode(buffer: ArrayBuffer): string {
 }
 
 /**
+ * Base64-decodes a string.
+ * From: https://stackoverflow.com/a/21797381
+ *
+ * @param data The data to decode.
+ */
+export function base64Decode(data: string): ArrayBuffer {
+    const binaryString = atob(data);
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
+/**
  * Checks if the user is on a mobile device.
  */
 export function isOnMobile(): boolean {
