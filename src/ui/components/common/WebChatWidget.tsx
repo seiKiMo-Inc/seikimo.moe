@@ -164,12 +164,12 @@ class WebChatWidget extends React.Component<{}, IState> {
                     <AiOutlineClose className={"Icon"} />
                 </div>
 
-                <div className={"Messages"}>
+                <div className={"ChatWidget_Messages"}>
                     {
                         messages.length == 0 ?
                             <p>Messages typed will appear here.</p> :
                             messages.map((message, index) =>
-                                <div key={index} className={"Message"}>
+                                <div key={index} className={"ChatWidget_Message"}>
                                     <p>{message.sender}:</p>
                                     <p>{message.text}</p>
                                 </div>

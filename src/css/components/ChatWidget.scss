@@ -102,7 +102,7 @@
     background-color: #061538;
 }
 
-.ChatWidget .Messages {
+.ChatWidget_Messages {
     display: flex;
     flex-direction: column;
 
@@ -110,9 +110,14 @@
     height: 100%;
 
     margin: 2px;
+
+    gap: 5px;
+
+    overflow-y: scroll;
+    overflow-x: clip;
 }
 
-.Messages .Message {
+.ChatWidget_Message {
     display: flex;
     flex-direction: row;
 
