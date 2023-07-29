@@ -2,6 +2,7 @@ import React from "react";
 
 import { ReactComponent as Hashtag } from "@icons/hashtag.svg";
 
+import { formatTime } from "@utils/general";
 import { Channel as ChannelType, Message as ChatMessage } from "@backend/proto/ChatGateway";
 
 import "@css/chat/Channel.scss";
@@ -103,7 +104,9 @@ class Channel extends React.Component<IProps, IState> {
                         {message(channel.lastMessages[1])}
                     </div>
 
-                    <p className={"Channel_Time"}>69:42 PM</p>
+                    <p className={"Channel_Time"}>
+                        {formatTime(channel.lastMessages[0]?.timestamp)}
+                    </p>
                 </div>
 
                 {this.props.selected && (

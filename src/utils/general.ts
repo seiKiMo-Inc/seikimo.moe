@@ -165,3 +165,35 @@ export function closeDialog(id: string): void {
     const dialog = document.getElementById(id);
     if (dialog) (dialog as HTMLDialogElement).close();
 }
+
+/**
+ * Formats a UNIX timestamp.
+ * If the date is today, only the time is shown in 'HH:MM' AM/PM.
+ * If the date was yesterday, 'Yesterday' is shown in additional to the time.
+ * Otherwise, the date is shown in 'MM/DD/YYYY HH:MM' AM/PM format.
+ *
+ * @param timestamp The timestamp to format.
+ */
+export function formatTime(timestamp: bigint | null): string {
+    if (timestamp == null) return "";
+
+    // Convert bigint to number.
+    const timestampNum = Number(timestamp);
+
+    const date = new Date(timestampNum);
+    const now = new Date();
+
+    const time = date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true
+    });
+
+    if (date.toDateString() === now.toDateString()) {
+        return time;
+    } else if (date.toDateString() === new Date(now.getTime() - 86400000).toDateString()) {
+        return `Yesterday, ${time}`;
+    } else {
+        return `${date.toLocaleDateString("en-US")}, ${time}`;
+    }
+}

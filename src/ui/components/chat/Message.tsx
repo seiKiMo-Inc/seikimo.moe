@@ -1,5 +1,6 @@
 import React from "react";
 
+import { formatTime } from "@utils/general";
 import { Message as ChatMessage } from "@backend/proto/ChatGateway";
 
 import "@css/chat/Message.scss";
@@ -35,7 +36,7 @@ class Message extends React.Component<IProps, IState> {
     }
 
     render() {
-        const { sender, content } = this.props.message;
+        const { sender, content, timestamp } = this.props.message;
         if (!sender) return undefined;
 
         return (
@@ -46,7 +47,10 @@ class Message extends React.Component<IProps, IState> {
                 <img className={"Message_Icon"} src={sender.icon} alt={sender.displayName} />
 
                 <div className={"Message_Content"}>
-                    <p className={"text-sm font-medium"}>{sender.displayName}</p>
+                    <div className={"flex flex-row gap-2.5"}>
+                        <p className={"text-sm font-medium"}>{sender.displayName}</p>
+                        <p className={"text-xs"}>{formatTime(timestamp)}</p>
+                    </div>
                     <p className={"text-sm"}>{content}</p>
                 </div>
             </div>

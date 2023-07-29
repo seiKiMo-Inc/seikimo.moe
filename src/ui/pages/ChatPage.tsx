@@ -257,14 +257,21 @@ class ChatPage extends React.Component<IProps, IState> {
                         this.state.channels.push(channel);
                         break;
                     case Action.UPDATE:
+                    case Action.UPDATE_LAST:
                         // Get the existing channel.
                         const existing = this.state.channels;
                         const index = existing.findIndex(c => c.id == channel.id);
                         if (index == -1) throw new Error("Channel not found.");
 
-                        // Update the list of channels.
-                        existing[index] = channel;
-                        this.setState({ channels: existing });
+                        if (action == Action.UPDATE) {
+                            // Update the list of channels.
+                            existing[index] = channel;
+                            this.setState({ channels: existing });
+                        } else {
+                            // Update the last message.
+                            existing[index].lastMessages = channel.lastMessages;
+                            this.setState({ channels: existing });
+                        }
                         return;
                     case Action.DELETE:
                         this.setState({ channels: this.state.channels
