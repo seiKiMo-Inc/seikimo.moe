@@ -1,0 +1,22 @@
+.ContextMenu {
+    @apply absolute hidden;
+
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #3f3f3f;
+
+    font-family: Poppins, sans-serif;
+
+    z-index: 10;
+}
+
+.ContextMenu_Option {
+    @apply flex flex-row;
+
+    padding: 5px;
+    border-radius: 5px;
+
+    &:hover {
+        background-color: #0c0c0c;
+    }
+}
