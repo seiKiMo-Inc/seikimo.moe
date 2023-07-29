@@ -2,7 +2,7 @@ import React from "react";
 
 import { ReactComponent as Hashtag } from "@icons/hashtag.svg";
 
-import type { Channel as ChannelType, ChatMessage } from "@backend/types";
+import { Channel as ChannelType, Message as ChatMessage } from "@backend/proto/ChatGateway";
 
 import "@css/chat/Channel.scss";
 
@@ -27,7 +27,9 @@ function message(message: ChatMessage): React.ReactNode {
     if (!message) return undefined;
 
     // Check if the sender is too long.
-    let sender = message.sender.displayName;
+    let sender = message.sender?.displayName;
+    if (!sender) return undefined;
+
     if (sender.length > 5) {
         sender = sender.substring(0, 5).trim();
     }

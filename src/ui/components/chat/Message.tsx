@@ -1,6 +1,6 @@
 import React from "react";
 
-import type { ChatMessage } from "@backend/types";
+import { Message as ChatMessage } from "@backend/proto/ChatGateway";
 
 import "@css/chat/Message.scss";
 
@@ -21,6 +21,7 @@ class Message extends React.Component<IProps, IState> {
 
     render() {
         const { sender, content } = this.props.message;
+        if (!sender) return undefined;
 
         return (
             <div className={"Message"}>

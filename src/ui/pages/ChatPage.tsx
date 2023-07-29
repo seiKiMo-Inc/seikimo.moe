@@ -2,15 +2,25 @@ import React from "react";
 
 import Channel from "@components/chat/Channel";
 import Message from "@components/chat/Message";
+import CreateChannel from "@components/chat/CreateChannel";
 
 import { newCall } from "@app/index";
-import { chatSocket, encode } from "@backend/sockets";
 import { getCredentials } from "@backend/user";
-import type { ChatMessage, Channel as ChannelType, Conversation } from "@backend/types";
+import { base64Decode, openDialog } from "@utils/general";
+import { chatSocket, encode } from "@backend/sockets";
+import {
+    Channel as ChannelType,
+    Message as ChatMessage,
+    Conversation,
+    AuthenticateCsReq,
+    AuthenticateScRsp,
+    ChannelScNotify,
+    MessageScNotify,
+    PacketIds,
+    Retcode
+} from "@backend/proto/ChatGateway";
 
 import "@css/pages/ChatPage.scss";
-import { AuthenticateCsReq, AuthenticateScRsp, MessageScNotify, PacketIds, Retcode } from "@backend/proto/ChatGateway";
-import { base64Decode } from "@utils/general";
 
 interface IProps {
 
@@ -202,15 +212,19 @@ class ChatPage extends React.Component<IProps, IState> {
                     throw new Error("Conversation not found.");
 
                 // Add the message.
-                conversation.messages.push({
-                    sender: {
-                        icon: message.sender?.icon ?? "",
-                        displayName: message.sender?.displayName ?? "",
-                    },
-                    content: message.content,
-                    time: message.timestamp
-                });
+                conversation.messages.push(message);
 
+                // Update the user interface.
+                this.forceUpdate();
+                return;
+            case PacketIds._ChannelScNotify:
+                const { channel } = ChannelScNotify.fromBinary(packetData);
+
+                // Ensure the channel is valid.
+                if (!channel) throw new Error("Invalid channel.");
+
+                // Add the channel.
+                this.state.channels.push(channel);
                 // Update the user interface.
                 this.forceUpdate();
                 return;
@@ -235,25 +249,33 @@ class ChatPage extends React.Component<IProps, IState> {
 
     render() {
         return (
-            <div className={"ChatPage"}>
-                <div className={"ChatPage_LeftPane"}>
-                    {this.state.channels.map((channel, index) => (
-                        <Channel key={index} channel={channel}
-                                 selected={this.state.channel == index}
-                                 select={() => this.setChannel(index)}
-                                 pickConversation={(index) =>
-                                          this.setState({ conversation: index })} />
-                    ))}
-                </div>
+            <>
+                <CreateChannel />
 
-                <div className={"ChatPage_Content"}>
-                    <div className={"ChatPage_MessageList"}>
-                        {this.getMessages().map((message, index) => (
-                            <Message key={index} message={message} />
+                <div className={"ChatPage"}>
+                    <div className={"ChatPage_LeftPane"}>
+                        {this.state.channels.map((channel, index) => (
+                            <Channel key={index} channel={channel}
+                                     selected={this.state.channel == index}
+                                     select={() => this.setChannel(index)}
+                                     pickConversation={(index) =>
+                                         this.setState({ conversation: index })} />
                         ))}
+
+                        <p
+                            className={"ChatPage_ChannelCreate"}
+                            onClick={() => openDialog("createChannel")}
+                        >Create a Channel</p>
                     </div>
 
-                    <div className={"flex pt-5"}>
+                    <div className={"ChatPage_Content"}>
+                        <div className={"ChatPage_MessageList"}>
+                            {this.getMessages().map((message, index) => (
+                                <Message key={index} message={message} />
+                            ))}
+                        </div>
+
+                        <div className={"flex pt-5"}>
                         <textarea
                             id={"messagebox"}
                             className={"ChatPage_Message"}
@@ -266,13 +288,14 @@ class ChatPage extends React.Component<IProps, IState> {
                                 }
                             }}
                         />
+                        </div>
+                    </div>
+
+                    <div className={"ChatPage_RightPane"}>
+                        right
                     </div>
                 </div>
-
-                <div className={"ChatPage_RightPane"}>
-                    right
-                </div>
-            </div>
+            </>
         );
     }
 }

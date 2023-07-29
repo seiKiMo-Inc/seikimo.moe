@@ -1,0 +1,109 @@
+.CreateChannel {
+    @apply absolute m-0;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    backface-visibility: hidden;
+
+    font-family: Poppins, sans-serif;
+    background-color: transparent;
+
+    box-shadow: 0 0 1px 100vmax rgba(0, 0, 0, 0.4);
+
+    z-index: 2;
+}
+
+.CreateChannel_Content {
+    @apply flex flex-col overflow-hidden;
+
+    padding: 25px 15px 15px 15px;
+
+    background-color: #191919;
+}
+
+.CreateChannel_Header {
+    @apply flex flex-col text-center text-white;
+
+    gap: 5px;
+
+    h1 {
+        @apply text-3xl font-bold;
+    }
+
+    h2 {
+        @apply text-base;
+    }
+}
+
+.CreateChannel_Icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+}
+
+.CreateChannel_Actions {
+    @apply flex flex-row;
+}
+
+.CreateChannel_Name {
+    @apply text-white text-[18px] font-medium;
+}
+
+.CreateChannel_Input {
+    @apply bg-neutral-800 rounded-[5px] text-lg text-white;
+
+    width: 320px;
+    height: 40px;
+
+    padding: 5px;
+
+    &:focus {
+        @apply outline-none;
+    }
+
+    &::placeholder {
+        @apply text-xl text-neutral-500 font-medium;
+    }
+}
+
+.CreateChannel_Close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 16px;
+    height: 16px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.CreateChannel_Actions {
+    @apply flex flex-row items-center justify-between bg-neutral-800;
+
+    width: 350px;
+    height: 50px;
+    padding: 0 14px 0 20px;
+
+    p {
+        @apply text-white font-medium;
+
+        user-select: none;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    button {
+        @apply text-white font-medium bg-zinc-900;
+
+        width: 90px;
+        height: 40px;
+        border-radius: 4px;
+
+        padding: 7px 14px 7px 14px;
+    }
+}

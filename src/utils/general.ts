@@ -135,3 +135,33 @@ export function applyToWindow(): void {
     win.sha256str = sha256str;
     win.base64Encode = base64Encode;
 }
+
+/**
+ * Checks if a dialog is open.
+ *
+ * @param id The ID of the dialog to check.
+ */
+export function isOpen(id: string): boolean {
+    const dialog = document.getElementById(id);
+    return dialog ? (dialog as HTMLDialogElement).open : false;
+}
+
+/**
+ * Opens a dialog.
+ *
+ * @param id The ID of the dialog to open.
+ */
+export function openDialog(id: string): void {
+    const dialog = document.getElementById(id);
+    if (dialog) (dialog as HTMLDialogElement).showModal();
+}
+
+/**
+ * Closes a dialog.
+ *
+ * @param id The ID of the dialog to close.
+ */
+export function closeDialog(id: string): void {
+    const dialog = document.getElementById(id);
+    if (dialog) (dialog as HTMLDialogElement).close();
+}

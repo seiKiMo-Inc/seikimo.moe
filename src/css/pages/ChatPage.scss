@@ -21,6 +21,16 @@
     background-color: var(--pane-width);
 }
 
+.ChatPage_ChannelCreate {
+    @apply text-center mt-2.5;
+
+    user-select: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 .ChatPage_Content {
     @apply flex flex-col;
     @apply h-full w-full;
