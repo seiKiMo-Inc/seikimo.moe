@@ -100,7 +100,7 @@ class ChatPage extends React.Component<IProps, IState> {
         // Check if a channel is selected.
         if (channel == -1) return null;
         // Get the selected channel.
-        return channels[channel].conversations[conversation];
+        return channels[channel]?.conversations[conversation];
     }
 
     /**
@@ -281,19 +281,25 @@ class ChatPage extends React.Component<IProps, IState> {
      */
     private async deleteSelectedChannel(): Promise<void> {
         // Get the selected channel.
-        const channel = this.state.selectedChannel;
-        if (!channel) throw new Error("No channel selected.");
+        const selected = this.state.selectedChannel;
+        if (!selected) throw new Error("No channel selected.");
 
         // Get the credentials.
         const { token } = getCredentials();
         // Delete the channel.
-        const response = await fetch(newCall(`channel/${channel.id}`), {
+        const response = await fetch(newCall(`channel/${selected.id}`), {
             method: "DELETE", headers: { Authorization: token }
         });
 
         // Check if the response is valid.
         if (!response.ok) {
             throw new Error("Failed to delete channel.");
+        }
+
+        // Check if the selected channel was deleted.
+        const { channels, channel } = this.state;
+        if (channels[channel].id == selected.id) {
+            this.setState({ channel: -1, conversation: 0 });
         }
     }
 
