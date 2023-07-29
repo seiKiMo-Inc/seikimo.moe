@@ -160,8 +160,10 @@ class ChatPage extends React.Component<IProps, IState> {
      * Sends the contents of the message box to the selected conversation.
      */
     private async sendMessage(): Promise<void> {
-        // Get the message.
         const messageBox = document.getElementById("messagebox") as HTMLTextAreaElement;
+        // Check the content.
+        const content = messageBox.value;
+        if (content.trim().length == 0) return;
 
         // Get the credentials.
         const { token } = getCredentials();
@@ -172,7 +174,7 @@ class ChatPage extends React.Component<IProps, IState> {
         // Send the message.
         const response = await fetch(newCall(`conversation/${conversation.id}/messages`), {
             method: "POST", headers: { Authorization: token },
-            body: JSON.stringify({ content: messageBox.value, hasAttachments: false })
+            body: JSON.stringify({ content, hasAttachments: false })
         });
 
         // Check if the response is valid.
