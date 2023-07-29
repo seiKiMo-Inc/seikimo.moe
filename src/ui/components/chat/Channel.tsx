@@ -11,6 +11,7 @@ interface IProps {
     channel: ChannelType;
 
     select?: () => void;
+    context?: (x: number, y: number) => void;
     pickConversation?: (index: number) => void;
 }
 
@@ -59,6 +60,20 @@ class Channel extends React.Component<IProps, IState> {
         };
     }
 
+    /**
+     * Shows the context menu for this channel.
+     *
+     * @param e The mouse event.
+     */
+    private showContext(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+        // Cancel existing context menu.
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Show the context menu.
+        this.props.context?.(e.clientX, e.clientY);
+    }
+
     render() {
         const { channel } = this.props;
 
@@ -73,6 +88,7 @@ class Channel extends React.Component<IProps, IState> {
                 <div
                     className={"Channel"}
                     onClick={this.props.select}
+                    onContextMenu={this.showContext.bind(this)}
                     style={{ backgroundColor: this.props.selected ? "#2f404d" : "#191919" }}
                 >
                     <img alt={"Channel Icon"}

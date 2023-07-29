@@ -2,6 +2,7 @@ import React from "react";
 
 import Channel from "@components/chat/Channel";
 import Message from "@components/chat/Message";
+import ContextMenu, { showMenu } from "@components/common/ContextMenu";
 import CreateChannel from "@components/chat/CreateChannel";
 
 import { newCall } from "@app/index";
@@ -17,7 +18,7 @@ import {
     ChannelScNotify,
     MessageScNotify,
     PacketIds,
-    Retcode
+    Retcode, Action
 } from "@backend/proto/ChatGateway";
 
 import "@css/pages/ChatPage.scss";
@@ -31,6 +32,8 @@ interface IState {
 
     channel: number;
     conversation: number;
+
+    selectedChannel: ChannelType | null;
 }
 
 class ChatPage extends React.Component<IProps, IState> {
@@ -41,7 +44,9 @@ class ChatPage extends React.Component<IProps, IState> {
             channels: [],
 
             channel: -1,
-            conversation: 0
+            conversation: 0,
+
+            selectedChannel: null
         };
     }
 
@@ -64,6 +69,27 @@ class ChatPage extends React.Component<IProps, IState> {
         if (newHeight >= maxHeight) {
             style.overflowY = "scroll";
         }
+    }
+
+    /**
+     * Shows the context menu for the message.
+     *
+     * @param message The message to show the context menu for.
+     */
+    private messageContext(message: ChatMessage): void {
+
+    }
+
+    /**
+     * Shows the context menu for the channel.
+     *
+     * @param x The X position of the context menu.
+     * @param y The Y position of the context menu.
+     * @param channel The channel to show the context menu for.
+     */
+    private channelContext(x: number, y: number, channel: ChannelType): void {
+        this.setState({ selectedChannel: channel });
+        showMenu("channelContext", x, y);
     }
 
     /**
@@ -218,16 +244,56 @@ class ChatPage extends React.Component<IProps, IState> {
                 this.forceUpdate();
                 return;
             case PacketIds._ChannelScNotify:
-                const { channel } = ChannelScNotify.fromBinary(packetData);
+                const { channel, action } = ChannelScNotify.fromBinary(packetData);
 
                 // Ensure the channel is valid.
                 if (!channel) throw new Error("Invalid channel.");
 
-                // Add the channel.
-                this.state.channels.push(channel);
+                // Perform the action.
+                switch (action) {
+                    case Action.CREATE:
+                        this.state.channels.push(channel);
+                        break;
+                    case Action.UPDATE:
+                        // Get the existing channel.
+                        const existing = this.state.channels;
+                        const index = existing.findIndex(c => c.id == channel.id);
+                        if (index == -1) throw new Error("Channel not found.");
+
+                        // Update the list of channels.
+                        existing[index] = channel;
+                        this.setState({ channels: existing });
+                        return;
+                    case Action.DELETE:
+                        this.setState({ channels: this.state.channels
+                                .filter(c => c.id != channel.id) })
+                        return;
+                }
+
                 // Update the user interface.
                 this.forceUpdate();
                 return;
+        }
+    }
+
+    /**
+     * Deletes the selected channel.
+     */
+    private async deleteSelectedChannel(): Promise<void> {
+        // Get the selected channel.
+        const channel = this.state.selectedChannel;
+        if (!channel) throw new Error("No channel selected.");
+
+        // Get the credentials.
+        const { token } = getCredentials();
+        // Delete the channel.
+        const response = await fetch(newCall(`channel/${channel.id}`), {
+            method: "DELETE", headers: { Authorization: token }
+        });
+
+        // Check if the response is valid.
+        if (!response.ok) {
+            throw new Error("Failed to delete channel.");
         }
     }
 
@@ -252,14 +318,20 @@ class ChatPage extends React.Component<IProps, IState> {
             <>
                 <CreateChannel />
 
+                <ContextMenu id={"channelContext"} options={[
+                    { name: "Delete Channel", action: this.deleteSelectedChannel.bind(this) }
+                ]} />
+
                 <div className={"ChatPage"}>
                     <div className={"ChatPage_LeftPane"}>
                         {this.state.channels.map((channel, index) => (
                             <Channel key={index} channel={channel}
                                      selected={this.state.channel == index}
                                      select={() => this.setChannel(index)}
+                                     context={(x, y) => this.channelContext(x, y, channel)}
                                      pickConversation={(index) =>
-                                         this.setState({ conversation: index })} />
+                                         this.setState({ conversation: index })}
+                            />
                         ))}
 
                         <p
@@ -271,7 +343,8 @@ class ChatPage extends React.Component<IProps, IState> {
                     <div className={"ChatPage_Content"}>
                         <div className={"ChatPage_MessageList"}>
                             {this.getMessages().map((message, index) => (
-                                <Message key={index} message={message} />
+                                <Message key={index} message={message}
+                                         onContext={() => this.messageContext(message)} />
                             ))}
                         </div>
 
