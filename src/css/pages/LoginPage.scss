@@ -25,7 +25,7 @@
     @apply transform -translate-x-1/2 -translate-y-1/2;
 
     width: 400px;
-    height: 410px;
+    height: 465px;
 
     padding: 30px;
     box-sizing: border-box;
@@ -107,6 +107,8 @@
 
 .LoginPage_External {
     @apply flex flex-col;
+
+    gap: 10px;
 }
 
 .LoginPage_Button {
@@ -122,6 +124,10 @@
 
     p {
         @apply text-white text-2xl font-medium;
+    }
+
+    .Align {
+        @apply flex flex-row items-center self-center;
     }
 
     cursor: pointer;

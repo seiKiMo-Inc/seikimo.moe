@@ -1,10 +1,11 @@
 import React from "react";
 
 import { ReactComponent as GoogleIcon } from "@icons/google.svg";
+import { ReactComponent as DiscordIcon } from "@icons/discord.svg";
 
 import RouterComponent from "@components/common/RouterComponent";
 
-import { newCall } from "@app/index";
+import { expectedOrigin, newCall } from "@app/index";
 import { sha256str } from "@utils/general";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 import type { AccountCredentials } from "@backend/types";
@@ -45,10 +46,28 @@ class LoginPage extends React.Component<IProps, IState> {
      * Defaults to 'seikimo.moe/'.
      */
     private getRedirectUrl(): string {
-        const url = new URL(window.location.href);
-        const redirect = url.searchParams.get("redirect");
+        const location = window.location;
+        const url = new URLSearchParams(location.search);
+        let redirect = url.get("redirect");
 
-        return redirect ?? "https://seikimo.moe/";
+        // Check if the redirect is valid.
+        if (!redirect || redirect == "") return "https://seikimo.moe/";
+        if (!redirect.includes("https://") && !redirect.includes("http://"))
+            redirect = `${location.href.includes("localhost") ?
+                "http" : window.isSecureContext ? "https" : "http"}://` + redirect;
+
+        return redirect;
+    }
+
+    /**
+     * Checks if the 'handoff' query parameter is set to true.
+     * Defaults to false.
+     */
+    private handoffCode(): boolean {
+        const url = new URL(window.location.href);
+        const code = url.searchParams.get("handoff");
+
+        return code == "true";
     }
 
     /**
@@ -78,6 +97,42 @@ class LoginPage extends React.Component<IProps, IState> {
         } catch (e) {
             // TODO: Display login error.
         }
+    }
+
+    /**
+     * Handles logging into Discord.
+     */
+    private loginWithDiscord(): void {
+        const url = newCall(`account/login/discord`);
+        const authWindow = window.open(url, "Authorize with Discord", "resizable=no,toolbar=no,height=950,width=500");
+
+        // Check if the window was spawned.
+        if (authWindow == null) {
+            alert("Please allow popups for this site.");
+            return;
+        }
+
+        // Focus the window.
+        authWindow.focus();
+        // Add a message handler.
+        window.addEventListener("message", (event) => {
+            // Check the event origin.
+            if (event.origin != expectedOrigin()) return;
+
+            // Fetch the token.
+            const { username, token } = event.data;
+            if (!username || !token) return;
+
+            // Store the credentials in the local storage.
+            const credentials = JSON.stringify({ username, token });
+            localStorage.setItem("credentials", credentials);
+
+            // Encode the credentials.
+            const encoded = btoa(credentials);
+            // Redirect to the redirect URL.
+            window.location.replace(this.getRedirectUrl() +
+                (this.handoffCode() ? `?handoff=${encoded}` : ""));
+        });
     }
 
     /**
@@ -133,9 +188,18 @@ class LoginPage extends React.Component<IProps, IState> {
 
                     <div className={"LoginPage_External"}>
                         <div className={"LoginPage_Button"}>
-                            <div className={"flex flex-row items-center self-center gap-[5.5px]"}>
+                            <div className={"Align gap-[7.5px]"}>
                                 <GoogleIcon />
                                 <p>Continue with Google</p>
+                            </div>
+                        </div>
+
+                        <div className={"LoginPage_Button"}>
+                            <div className={"Align gap-[5px]"}
+                                 onClick={this.loginWithDiscord.bind(this)}
+                            >
+                                <DiscordIcon />
+                                <p>Continue with Discord</p>
                             </div>
                         </div>
                     </div>

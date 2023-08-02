@@ -18,9 +18,16 @@ export function isDevelopment(): boolean {
  * @param route The route to call.
  */
 export function newCall(route: string): string {
-    return `${isDevelopment() ?
+    return `${expectedOrigin()}/${route}`;
+}
+
+/**
+ * Returns the expected origin for the current environment.
+ */
+export function expectedOrigin(): string {
+    return isDevelopment() ?
         "http://localhost:3000" :
-        "https://seikimo.moe"}/${route}`;
+        "https://seikimo.moe";
 }
 
 const root = ReactDOM.createRoot(
