@@ -15,7 +15,10 @@
     @apply flex flex-col;
     @apply h-full w-screen;
 
+    overflow-y: scroll;
+
     padding-top: 110px;
+    padding-bottom: 10px;
 
     max-width: var(--width);
     background-color: var(--pane-width);
