@@ -22,6 +22,10 @@
 
     max-width: var(--width);
     background-color: var(--pane-width);
+
+    &::-webkit-scrollbar {
+        @apply hidden;
+    }
 }
 
 .ChatPage_ChannelCreate {
@@ -38,16 +42,24 @@
     @apply flex flex-col;
     @apply h-full w-full;
 
+    overflow-y: scroll;
     padding-left: 15px;
+}
+
+.ChatPage_TextBox {
+    @apply flex pt-5;
+
+    position: absolute;
+    bottom: 0;
 }
 
 .ChatPage_MessageList {
     @apply flex flex-col h-full;
 
-    overflow-y: scroll;
     justify-content: flex-end;
 
-    padding-left: 10px;
+    padding: 10px 0 55px 10px;
+    height: 10000px;
 
     gap: 2px;
 }
@@ -60,7 +72,6 @@
 
     height: 45px;
     min-width: 300px;
-    max-width: 950px;
     max-height: 275px;
     padding: 10px 15px 10px 15px;
     margin: 0 15px 10px 0;

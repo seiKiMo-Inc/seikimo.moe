@@ -192,8 +192,8 @@ export function formatTime(timestamp: bigint | null): string {
     if (date.toDateString() === now.toDateString()) {
         return time;
     } else if (date.toDateString() === new Date(now.getTime() - 86400000).toDateString()) {
-        return `Yesterday, ${time}`;
+        return `Yesterday`;
     } else {
-        return `${date.toLocaleDateString("en-US")}, ${time}`;
+        return `${date.toLocaleDateString("en-US")}`;
     }
 }

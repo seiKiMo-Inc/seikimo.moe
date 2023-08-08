@@ -34,6 +34,7 @@ interface IState {
     conversation: number;
 
     selectedChannel: ChannelType | null;
+    boxWidth: number;
 }
 
 class ChatPage extends React.Component<IProps, IState> {
@@ -46,7 +47,8 @@ class ChatPage extends React.Component<IProps, IState> {
             channel: -1,
             conversation: 0,
 
-            selectedChannel: null
+            selectedChannel: null,
+            boxWidth: 0
         };
     }
 
@@ -312,8 +314,22 @@ class ChatPage extends React.Component<IProps, IState> {
         }
     }
 
+    /**
+     * Sets the width of the text input box.
+     */
+    private applyWidth(): void {
+        // Get the content element.
+        const content = document.getElementById("content");
+        if (!content) return;
+
+        // Compute the width of the content.
+        const width = content.clientWidth;
+        this.setState({ boxWidth: width - 15 });
+    }
+
     componentDidMount() {
         this.updateMessageBox();
+        this.applyWidth();
 
         // Load over HTTP.
         this.loadChannels()
@@ -326,6 +342,9 @@ class ChatPage extends React.Component<IProps, IState> {
         socket.onmessage = this.receiveMessage.bind(this);
         socket.onclose = () => {};
         socket.onerror = () => {};
+
+        // Register event listeners.
+        window.addEventListener("resize", this.applyWidth.bind(this));
     }
 
     render() {
@@ -355,7 +374,7 @@ class ChatPage extends React.Component<IProps, IState> {
                         >Create a Channel</p>
                     </div>
 
-                    <div className={"ChatPage_Content"}>
+                    <div id={"content"} className={"ChatPage_Content"}>
                         <div className={"ChatPage_MessageList"}>
                             {this.getMessages().map((message, index) => (
                                 <Message key={index} message={message}
@@ -363,19 +382,22 @@ class ChatPage extends React.Component<IProps, IState> {
                             ))}
                         </div>
 
-                        <div className={"flex pt-5"}>
-                        <textarea
-                            id={"messagebox"}
-                            className={"ChatPage_Message"}
-                            placeholder={"Message the conversation"}
-                            onChange={this.updateMessageBox.bind(this)}
-                            onKeyDown={(event) => {
-                                if (event.key == "Enter" && !event.shiftKey) {
-                                    event.preventDefault();
-                                    this.sendMessage().catch(console.error);
-                                }
-                            }}
-                        />
+                        <div
+                            className={"ChatPage_TextBox"}
+                            style={{ width: this.state.boxWidth }}
+                        >
+                            <textarea
+                                id={"messagebox"}
+                                className={"ChatPage_Message"}
+                                placeholder={"Message the conversation"}
+                                onChange={this.updateMessageBox.bind(this)}
+                                onKeyDown={(event) => {
+                                    if (event.key == "Enter" && !event.shiftKey) {
+                                        event.preventDefault();
+                                        this.sendMessage().catch(console.error);
+                                    }
+                                }}
+                            />
                         </div>
                     </div>
 
