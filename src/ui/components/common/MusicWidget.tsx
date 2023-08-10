@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react";
+import React, { ReactNode } from "react";
 
 import "@css/components/MusicWidget.css";
 
@@ -41,6 +41,7 @@ class MusicWidget extends React.Component<any, IState> {
         audio.src = "bgmusic.mp3";
         audio.loop = true;
         audio.autoplay = true;
+        audio.volume = 0.3;
         document.body.appendChild(audio);
         audio.play().then(() => this.setState({ isPlaying: true }));
     }
