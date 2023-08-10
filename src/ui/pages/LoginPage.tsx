@@ -100,11 +100,11 @@ class LoginPage extends React.Component<IProps, IState> {
     }
 
     /**
-     * Handles logging into Discord.
+     * Handles logging using a social provider.
      */
-    private loginWithDiscord(): void {
-        const url = newCall(`account/login/discord`);
-        const authWindow = window.open(url, "Authorize with Discord", "resizable=no,toolbar=no,height=950,width=500");
+    private socialLogin(route: string, name: string): void {
+        const url = newCall(route);
+        const authWindow = window.open(url, name, "resizable=no,toolbar=no,height=950,width=500");
 
         // Check if the window was spawned.
         if (authWindow == null) {
@@ -188,7 +188,9 @@ class LoginPage extends React.Component<IProps, IState> {
 
                     <div className={"LoginPage_External"}>
                         <div className={"LoginPage_Button"}>
-                            <div className={"Align gap-[7.5px]"}>
+                            <div className={"Align gap-[7.5px]"}
+                                 onClick={() => this.socialLogin("account/login/google", "Authenticate with Google")}
+                            >
                                 <GoogleIcon />
                                 <p>Continue with Google</p>
                             </div>
@@ -196,7 +198,7 @@ class LoginPage extends React.Component<IProps, IState> {
 
                         <div className={"LoginPage_Button"}>
                             <div className={"Align gap-[5px]"}
-                                 onClick={this.loginWithDiscord.bind(this)}
+                                 onClick={() => this.socialLogin("account/login/discord", "Authenticate with Discord")}
                             >
                                 <DiscordIcon />
                                 <p>Continue with Discord</p>
