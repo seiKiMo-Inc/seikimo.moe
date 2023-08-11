@@ -28,6 +28,15 @@
     filter: grayscale(100%) drop-shadow(0 0 0.5rem aqua);
     object-fit: cover;
     object-position: 50% 50%;
+
+    animation: blink 2.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
 }
 
 .HeaderByline {
