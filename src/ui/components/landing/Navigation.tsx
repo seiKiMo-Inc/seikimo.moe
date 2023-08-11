@@ -103,11 +103,15 @@ class Navigation extends React.Component<{}, IState> {
                                 <p>Paste</p>
                             </div>
 
-                            <div className={"NavigationBar_Page"}
-                                 onClick={() => launch("account")}
-                            >
-                                <p>Account</p>
-                            </div>
+                            {
+                                (window as any)["account"] != null && (
+                                    <div className={"NavigationBar_Page"}
+                                         onClick={() => launch("account")}
+                                    >
+                                        <p>Account</p>
+                                    </div>
+                                )
+                            }
                         </div>
                     ) : (
                         <>
