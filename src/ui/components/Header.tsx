@@ -5,6 +5,11 @@ import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 import "@css/Header.css";
 
 class Header extends React.Component {
+    private scroll(): void {
+        document.getElementById("membersList")
+            ?.scrollIntoView({ behavior: "smooth" });
+    }
+
     render() {
         return (
             <div
@@ -16,6 +21,7 @@ class Header extends React.Component {
             >
                 <div id="snow"></div>
                 <div className="HeaderBackground" />
+
                 <div className="HeaderContent">
                     <div className="HeaderLogo">
                         <img src="/seikimo.png" alt="seiKiMo" />
@@ -24,7 +30,10 @@ class Header extends React.Component {
                         <p>Stupid Dumbasses Make Based Software</p>
                     </div>
                 </div>
-                <div className="HeaderScroll">
+
+                <div className={"HeaderScroll"}
+                     onClick={this.scroll.bind(this)}
+                >
                     <svg>
                         <path className="ScrollArrow1" d="M0 0 L30 32 L60 0" />
                         <path className="ScrollArrow2" d="M0 20 L30 52 L60 20" />

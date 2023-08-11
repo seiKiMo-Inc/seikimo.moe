@@ -9,11 +9,13 @@ class OrgInfo extends React.Component {
         return (
             <div className="OrgInfo">
                 <div className="OrgShapeDivider">
-                    <img src="wave.svg" alt="wave" />
+                    <img src="/wave.svg" alt="wave" />
                 </div>
+
                 <div className="OrgInfoDescription">
                     <p>Members</p>
                 </div>
+
                 <OrgMembers />
             </div>
         )

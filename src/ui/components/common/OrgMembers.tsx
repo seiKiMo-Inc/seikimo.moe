@@ -49,7 +49,7 @@ class OrgMembers extends React.Component<any, IState> {
 
     render() {
         return (
-            <div className="OrgInfoMembersList">
+            <div id={"membersList"} className={"OrgInfoMembersList"}>
                 {this.state.members.map((member, index) => (
                     <div className="OrgInfoMember" key={member.id} style={{ transitionDelay: `${index * 100}ms` }}>
                         <div className="OrgInfoMemberImage">

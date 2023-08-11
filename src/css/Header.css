@@ -40,6 +40,10 @@
     user-select: none;
 }
 
+.HeaderScroll :hover {
+    cursor: pointer;
+}
+
 .HeaderScroll svg {
     width: 60px;
     height: 72px;
