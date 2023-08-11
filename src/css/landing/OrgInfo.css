@@ -36,6 +36,7 @@
     opacity: 0;
     transition: all 0.5s ease-in-out;
     transform: translateX(-20%);
+    font-family: Helvetica, sans-serif;
 
     &:hover {
         cursor: pointer;
