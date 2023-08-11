@@ -15,7 +15,7 @@ class Footer extends React.Component {
                     <p className="FooterCopyright">
                         © 2023 seiKiMo-Inc.
                     </p>
-                    <img className="FooterGithubButton" src="github-button.png" alt="Github button" onClick={this.sendToGithub} />
+                    <img className="FooterGithubButton" src="/github-button.png" alt="Github button" onClick={this.sendToGithub} />
                 </div>
             </div>
         );
