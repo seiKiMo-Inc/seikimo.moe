@@ -1,0 +1,30 @@
+.NavigationBar {
+    @apply fixed flex flex-row w-full justify-center items-center;
+
+    box-sizing: border-box;
+    background: linear-gradient(0deg, transparent, rgba(0, 0, 0, 0.7));
+
+    top: 0;
+    left: 0;
+    z-index: 3;
+
+    transition: all 0.2s ease;
+}
+
+.NavigationBar_Container {
+    @apply flex justify-between items-center w-full;
+
+    gap: 10px;
+    max-width: 1200px;
+}
+
+.NavigationBar_Page {
+    @apply flex justify-center items-center w-full;
+
+    padding: 25px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.2);
+    }
+}

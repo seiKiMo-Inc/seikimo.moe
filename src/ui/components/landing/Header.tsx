@@ -2,7 +2,7 @@ import React from "react";
 
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 
-import "@css/Header.css";
+import "@css/landing/Header.css";
 
 class Header extends React.Component {
     private scroll(): void {

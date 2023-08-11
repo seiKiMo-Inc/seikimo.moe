@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import LandingPage from "@pages/LandingPage";
 import ChatPage from "@pages/ChatPage";
@@ -19,20 +19,18 @@ import "react-tooltip/dist/react-tooltip.css";
 class App extends React.PureComponent {
     render() {
         return (
-            <Router>
-                <Routes>
-                    <Route path={"/"} element={<LandingPage />} />
-                    <Route path={"/chat"} element={<ChatPage />} />
-                    <Route path={"/login"} element={<LoginPage />} />
-                    <Route path={"/paste"} element={<PastePage />} />
-                    <Route path={"/upload"} element={<UploadPage />} />
-                    <Route path={"/donate"} element={<Donations />} />
-                    <Route path={"/laudiolin-privacy"} element={<LaudiolinPrivacy />} />
+            <Routes>
+                <Route path={"/"} element={<LandingPage />} />
+                <Route path={"/chat"} element={<ChatPage />} />
+                <Route path={"/login"} element={<LoginPage />} />
+                <Route path={"/paste"} element={<PastePage />} />
+                <Route path={"/upload"} element={<UploadPage />} />
+                <Route path={"/donate"} element={<Donations />} />
+                <Route path={"/laudiolin-privacy"} element={<LaudiolinPrivacy />} />
 
-                    <Route path={"/paste/:id"} element={<PasteDisplay />} />
-                    <Route path={"/login/:srv"} element={<LoginPage />} />
-                </Routes>
-            </Router>
+                <Route path={"/paste/:id"} element={<PasteDisplay />} />
+                <Route path={"/login/:srv"} element={<LoginPage />} />
+            </Routes>
         );
     }
 }

@@ -1,8 +1,9 @@
 import React from "react";
 
-import Header from "@components/Header";
-import OrgInfo from "@components/OrgInfo";
-import Footer from "@components/Footer";
+import Navigation from "@components/landing/Navigation";
+import Header from "@components/landing/Header";
+import OrgInfo from "@components/landing/OrgInfo";
+import Footer from "@components/landing/Footer";
 import MusicWidget from "@components/common/MusicWidget";
 import WebChatWidget from "@components/common/WebChatWidget";
 
@@ -17,10 +18,13 @@ class LandingPage extends React.Component {
 
     render() {
         return (
-            <div className="LandingPage">
+            <div className={"LandingPage"}>
+                <Navigation />
+
                 <Header />
                 <OrgInfo />
                 <Footer />
+
                 <MusicWidget />
                 <WebChatWidget />
             </div>

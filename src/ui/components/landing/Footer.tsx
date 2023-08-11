@@ -1,6 +1,6 @@
 import React from "react";
 
-import "@css/Footer.css";
+import "@css/landing/Footer.css";
 
 class Footer extends React.Component {
     sendToGithub = () => {
