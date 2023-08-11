@@ -131,3 +131,10 @@ export const Durations: { [key: string]: number } = {
     "7 days": 7 * 24 * 60 * 60 * 1000,
     "30 days": 30 * 24 * 60 * 60 * 1000
 };
+
+/** List of seiKimo owners. */
+export const Owners: string[] = [
+    "KingRainbow44",
+    "Arikatsu",
+    "KiminaNatsuki"
+];
