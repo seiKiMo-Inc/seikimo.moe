@@ -14,6 +14,7 @@ import PasteDisplay from "@pages/PasteDisplay";
 
 import "@css/App.css";
 import "highlight.js/styles/github-dark.css";
+import "react-tooltip/dist/react-tooltip.css";
 
 class App extends React.PureComponent {
     render() {
