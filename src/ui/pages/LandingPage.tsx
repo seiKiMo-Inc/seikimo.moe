@@ -34,12 +34,14 @@ function Laudiolin() {
                         </p>
                     </div>
 
-                    <div className={"LandingPage_Open"}
-                         onClick={() => window.open("https://laudiolin.seikimo.moe")}
-                    >
-                        <MdLaunch />
+                    <div className={"LandingPage_Buttons"}>
+                        <div className={"LandingPage_Open"}
+                             onClick={() => window.open("https://laudiolin.seikimo.moe")}
+                        >
+                            <MdLaunch />
 
-                        <p>Open</p>
+                            <p>Open</p>
+                        </div>
                     </div>
                 </div>
             </div>

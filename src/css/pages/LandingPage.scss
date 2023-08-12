@@ -54,6 +54,35 @@
     }
 }
 
+@media screen and (max-width: 1200px) {
+    .LandingPage_Segment {
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+    }
+
+    .LandingPage_TextContainer {
+        align-items: center !important;
+        text-align: center !important;
+        justify-content: center;
+
+        width: 80%;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .LandingPage_Laudiolin {
+        background-image:
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url("/images/laudiolin-mobile.png") !important;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .LandingPage_Buttons {
+        @apply flex-col;
+    }
+}
+
 .LandingPage_Laudiolin {
     background-image: url("/images/laudiolin.png");
 }
