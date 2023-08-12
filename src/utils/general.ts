@@ -205,5 +205,5 @@ export function formatTime(timestamp: bigint | null): string {
  */
 export function scrollTo(id: string): void {
     const element = document.getElementById(id);
-    if (element) element.scrollIntoView();
+    if (element) element.scrollIntoView({ behavior: "smooth" });
 }
