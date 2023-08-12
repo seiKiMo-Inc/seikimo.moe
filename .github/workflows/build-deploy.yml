@@ -1,0 +1,48 @@
+name: Build & Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build Web App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: production
+          path: build
+
+  deploy:
+    needs: build
+    name: Deploy to seiKiMo
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: production
+          path: build
+      - name: ZIP Artifact
+        uses: vimtor/action-zip@v1
+        with:
+          files: build/
+          dest: build.zip
+      - name: Deploy to seiKiMo
+        uses: KingRainbow44/upload-file@v1
+        with:
+          url: https://seikimo.moe/actions/site
+          file: build.zip
+          authorization: ${{ secrets.UPLOAD_TOKEN }}
+          method: POST
