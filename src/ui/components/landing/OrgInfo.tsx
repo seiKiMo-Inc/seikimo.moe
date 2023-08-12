@@ -7,7 +7,7 @@ import "@css/landing/OrgInfo.scss";
 class OrgInfo extends React.Component {
     render() {
         return (
-            <div className="OrgInfo">
+            <div id={"orgInfo"} className="OrgInfo">
                 <div className="OrgShapeDivider">
                     <img src="/wave.svg" alt="wave" />
                 </div>

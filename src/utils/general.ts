@@ -197,3 +197,13 @@ export function formatTime(timestamp: bigint | null): string {
         return `${date.toLocaleDateString("en-US")}`;
     }
 }
+
+/**
+ * Scrolls to an element.
+ *
+ * @param id The ID of the element to scroll to.
+ */
+export function scrollTo(id: string): void {
+    const element = document.getElementById(id);
+    if (element) element.scrollIntoView();
+}

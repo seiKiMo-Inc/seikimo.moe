@@ -1,15 +1,11 @@
 import React from "react";
 
+import { scrollTo } from "@utils/general";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 
 import "@css/landing/Header.css";
 
 class Header extends React.Component {
-    private scroll(): void {
-        document.getElementById("membersList")
-            ?.scrollIntoView({ behavior: "smooth" });
-    }
-
     render() {
         return (
             <div
@@ -32,7 +28,7 @@ class Header extends React.Component {
                 </div>
 
                 <div className={"HeaderScroll"}
-                     onClick={this.scroll.bind(this)}
+                     onClick={() => scrollTo("orgInfo")}
                 >
                     <svg>
                         <path className="ScrollArrow1" d="M0 0 L30 32 L60 0" />
