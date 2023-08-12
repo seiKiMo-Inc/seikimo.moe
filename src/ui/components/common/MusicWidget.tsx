@@ -4,7 +4,6 @@ import "@css/components/MusicWidget.css";
 
 interface IState {
     isPlaying: boolean;
-    hasUserInteracted: boolean;
 }
 
 class MusicWidget extends React.Component<any, IState> {
@@ -12,8 +11,7 @@ class MusicWidget extends React.Component<any, IState> {
         super(props);
 
         this.state = {
-            isPlaying: false,
-            hasUserInteracted: false
+            isPlaying: false
         };
     }
 
@@ -24,7 +22,7 @@ class MusicWidget extends React.Component<any, IState> {
                 <path d="M0 0h24v24H0z" fill="none"/>
             </svg>
         );
-    }
+    };
 
     pauseIconSVG = (): ReactNode => {
         return (
@@ -33,55 +31,76 @@ class MusicWidget extends React.Component<any, IState> {
                 <path d="M0 0h24v24H0z" fill="none"/>
             </svg>
         );
-    }
+    };
 
     playMusic = () => {
         if (this.state.isPlaying) return;
+
+        // Get the element to add the audio element to.
+        const musicWidget = document.getElementById("music");
+        if (!musicWidget) return;
+
+        // Create the audio element.
         const audio = document.createElement("audio");
         audio.src = "bgmusic.mp3";
         audio.loop = true;
         audio.autoplay = true;
         audio.volume = 0.3;
-        document.body.appendChild(audio);
+
+        // Play the audio.
+        musicWidget.appendChild(audio);
         audio.play().then(() => this.setState({ isPlaying: true }));
-    }
+
+        // Set the widget.
+        const anyWindow = window as any;
+        anyWindow.musicWidget = audio;
+    };
 
     handlePlayback = async () => {
-        const audio = document.querySelector("audio");
-        if (audio) {
+        const audio = (window as any).musicWidget;
+        if (audio && audio instanceof HTMLAudioElement) {
             if (this.state.isPlaying) {
                 audio.pause();
                 this.setState({ isPlaying: false });
             } else {
-                if (!this.state.hasUserInteracted) {
-                    return;
-                } else {
-                    await audio.play();
-                    this.setState({ isPlaying: true });
-                }
+                await audio.play();
+                this.setState({ isPlaying: true });
             }
         }
-    }
+    };
 
     listenForUserInteraction = () => {
         document.body.onclick = () => {
-            if (this.state.hasUserInteracted) return;
-            this.setState({ hasUserInteracted: true });
+            const anyWindow = window as any;
+            if (anyWindow.musicWidget) return;
+
             this.playMusic();
-        }
-    }
+        };
+    };
 
     redirectToAudioSource = () => {
         window.open("https://www.youtube.com/watch?v=8o8P_RJngss", "_blank");
-    }
+    };
 
     componentDidMount() {
+        // Wait for the user to interact with the page before playing music.
         this.listenForUserInteraction();
+    }
+
+    componentWillUnmount() {
+        document.body.onclick = null;
+
+        // Remove the audio element.
+        const audio = (window as any).musicWidget;
+        if (audio && audio instanceof HTMLAudioElement) {
+            audio.pause();
+            audio.remove();
+        }
     }
 
     render() {
         return (
-            <div className="MusicWidget">
+            <div id={"music"} className="MusicWidget">
                 <div className="MusicWidgetPlayButton" onClick={this.handlePlayback}>
                     <div className="MusicWidgetPlayButtonSVG">
                         {this.state.isPlaying ? this.pauseIconSVG() : this.playIconSVG()}
