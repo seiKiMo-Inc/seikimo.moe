@@ -1,0 +1,59 @@
+.LandingPage_Segment {
+    @apply flex w-full;
+
+    height: 600px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: repeat;
+    background-attachment: fixed;
+}
+
+.LandingPage_Container {
+    @apply flex flex-col justify-center items-center;
+    @apply w-full h-full;
+}
+
+.LandingPage_TextContainer {
+    @apply flex flex-col;
+
+    gap: 20px;
+    width: 500px;
+
+    h1 {
+        font-size: 50px;
+        font-weight: 600;
+    }
+}
+
+.LandingPage_Description {
+    @apply flex flex-col;
+
+    gap: 20px;
+}
+
+.LandingPage_Open {
+    @apply flex flex-row;
+
+    gap: 6px;
+
+    padding: 10px 20px 10px 20px;
+    background-color: #1f6feb;
+
+    color: white;
+    font-size: 16px;
+
+    border-radius: 5px;
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.LandingPage_Laudiolin {
+    background-image: url("/images/laudiolin.png");
+}

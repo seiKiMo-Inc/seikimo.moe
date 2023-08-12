@@ -1,7 +1,7 @@
 import React from "react";
 
 import { expectedOrigin, router } from "@app/index";
-import { isOnMobile } from "@utils/general";
+import { scrollTo, isOnMobile } from "@utils/general";
 
 import "@css/landing/Navigation.scss"
 
@@ -80,7 +80,7 @@ class Navigation extends React.Component<{}, IState> {
                             </div>
 
                             <div className={"NavigationBar_Page"}
-                                 onClick={() => launch("https://laudiolin.seikimo.moe")}
+                                 onClick={() => scrollTo("laudiolin")}
                             >
                                 <p>Laudiolin</p>
                             </div>
