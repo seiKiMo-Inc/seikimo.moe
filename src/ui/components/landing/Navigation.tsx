@@ -50,20 +50,20 @@ class Navigation extends React.Component<{}, IState> {
     }
 
     componentDidMount() {
-        if ((window as any).navigation) {
+        if ((window as any).navBar) {
             return;
         }
 
-        (window as any).navigation = this;
+        (window as any).navBar = this;
         window.addEventListener("scroll", this.handleScroll.bind(this));
     }
 
     componentWillUnmount() {
-        if (!(window as any).navigation) {
+        if (!(window as any).navBar) {
             return;
         }
 
-        (window as any).navigation = undefined;
+        (window as any).navBar = undefined;
         window.removeEventListener("scroll", this.handleScroll.bind(this));
     }
 
