@@ -5,7 +5,7 @@ import { Tooltip } from "react-tooltip";
 import { getAllMembers } from "@backend/user";
 import { Member, Owners } from "@backend/types";
 
-import "@css/landing/OrgInfo.css";
+import "@css/landing/OrgInfo.scss";
 
 interface IState {
     members: Member[];

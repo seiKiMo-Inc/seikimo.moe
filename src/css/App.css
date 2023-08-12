@@ -4,12 +4,12 @@
 
 @font-face {
     font-family: "Poppins";
-    src: url(/fonts/Poppins-Regular.ttf);
+    src: url(/src/ui/fonts/Poppins-Regular.ttf);
 }
 
 @font-face {
     font-family: "Poppins";
-    src: url(/fonts/Poppins-Medium.ttf);
+    src: url(/src/ui/fonts/Poppins-Medium.ttf);
     font-weight: 500;
 }
 

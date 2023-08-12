@@ -6,6 +6,8 @@
     right: 20px;
     box-shadow: #000000 10px 10px 10px;
     display: flex;
+
+    font-family: Helvetica, sans-serif;
 }
 
 .MusicWidgetPlayButton {

@@ -2,7 +2,7 @@ import React from "react";
 
 import OrgMembers from "@components/common/OrgMembers";
 
-import "@css/landing/OrgInfo.css";
+import "@css/landing/OrgInfo.scss";
 
 class OrgInfo extends React.Component {
     render() {
