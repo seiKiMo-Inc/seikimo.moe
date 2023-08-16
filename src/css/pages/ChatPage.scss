@@ -42,6 +42,8 @@
     @apply flex flex-col;
     @apply h-full w-full;
 
+    padding-top: 15px;
+
     overflow-y: scroll;
     padding-left: 15px;
 }
@@ -58,7 +60,7 @@
 
     justify-content: flex-end;
 
-    padding: 10px 0 55px 10px;
+    padding-bottom: 55px;
     height: 10000px;
 
     gap: 2px;
