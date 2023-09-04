@@ -315,6 +315,28 @@ class ChatPage extends React.Component<IProps, IState> {
     }
 
     /**
+     * Creates a new conversation.
+     *
+     * @param name The name of the conversation.
+     * @private
+     */
+    private async createConversation(name: string = "Cool Conversation"): Promise<void> {
+        // Get the selected channel.
+        const selected = this.state.selectedChannel;
+        if (!selected) throw new Error("No channel selected.");
+
+        // Get the credentials.
+        const { token } = getCredentials();
+        // Create the conversation.
+        const body = JSON.stringify({
+            name, channelId: selected.id
+        });
+        await fetch(newCall(`conversation`), {
+            method: "POST", body, headers: { Authorization: token }
+        });
+    }
+
+    /**
      * Sets the width of the text input box.
      */
     private applyWidth(): void {
@@ -353,7 +375,8 @@ class ChatPage extends React.Component<IProps, IState> {
                 <CreateChannel />
 
                 <ContextMenu id={"channelContext"} options={[
-                    { name: "Delete Channel", action: this.deleteSelectedChannel.bind(this) }
+                    { name: "Delete Channel", action: this.deleteSelectedChannel.bind(this) },
+                    { name: "New Conversation", action: this.createConversation.bind(this) }
                 ]} />
 
                 <div className={"ChatPage"}>
