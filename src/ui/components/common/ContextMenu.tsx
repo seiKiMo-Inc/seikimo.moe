@@ -1,5 +1,7 @@
 import React from "react";
 
+import { openContext } from "@utils/context";
+
 import "@css/components/ContextMenu.scss";
 
 export type ContextOption = {
@@ -34,6 +36,8 @@ export function showMenu(id: string, x: number, y: number): void {
         menu.style.display = "flex";
         menu.style.left = x + "px";
         menu.style.top = y + "px";
+
+        openContext(menu);
     }
 }
 

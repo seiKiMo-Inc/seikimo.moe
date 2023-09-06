@@ -1,5 +1,5 @@
 .ContextMenu {
-    @apply absolute hidden;
+    @apply absolute hidden flex-col;
 
     padding: 5px;
     border-radius: 5px;
@@ -17,6 +17,7 @@
     border-radius: 5px;
 
     &:hover {
+        user-select: none;
         background-color: #0c0c0c;
     }
 }
