@@ -7,14 +7,46 @@ let _webChatSocket: WebSocket | null = null;
  * Gets the WebSocket for the chat server.
  */
 export function chatSocket(): WebSocket {
-    return _chatSocket ?? (_chatSocket = new WebSocket(newSocket("chat/gateway")));
+    return _chatSocket ?? reconnect(_chatSocket,
+        (socket) => _chatSocket = socket,
+        () => _chatSocket = new WebSocket(newSocket("chat/gateway"))
+    );
 }
 
 /**
  * Gets the WebSocket for the landing page chat server.
  */
 export function webChatSocket(): WebSocket {
-    return _webChatSocket ?? (_webChatSocket = new WebSocket(newSocket("webchat")));
+    return _webChatSocket ?? reconnect(_webChatSocket,
+        (socket) => _webChatSocket = socket,
+        () => _webChatSocket = new WebSocket(newSocket("webchat"))
+    );
+}
+
+/**
+ * Automatically reconnects a WebSocket.
+ *
+ * @param current The current WebSocket.
+ * @param set The WebSocket to reconnect.
+ * @param factory The factory function to create a new WebSocket.
+ * @param died Did the WebSocket die?
+ */
+export function reconnect(
+    current: WebSocket | null,
+    set: (socket: WebSocket) => void,
+    factory: () => WebSocket,
+    died: boolean = false
+): WebSocket {
+    if (current) {
+        current.onclose = () => reconnect(current, set, factory, true);
+    }
+
+    if (died) {
+        // Create a new WebSocket.
+        set(factory());
+    }
+
+    return current ?? factory();
 }
 
 /**
