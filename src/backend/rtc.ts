@@ -97,7 +97,7 @@ export class WebRTC {
             await this.peer.setLocalDescription(offer);
 
             // Broadcast this offer to the signaling server.
-            this.signaling.send({ offer });
+            this.signaling.send({ desc: offer });
         } catch (error) {
             console.error(error);
         }
@@ -120,10 +120,10 @@ export class WebRTC {
                     await peer.setRemoteDescription(desc);
                     // Add the local user's media sources.
                     const stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    stream.getTracks().forEach((track) => peer.addTrack(track, stream));
+                    stream.getTracks().forEach(track => peer.addTrack(track, stream));
                     // Create an answer and reply with it.
                     await peer.setLocalDescription(await peer.createAnswer());
-                    signaling.send(JSON.stringify({ desc: peer.localDescription }));
+                    signaling.send({ desc: peer.localDescription });
                 } else if (desc.type === "answer") {
                     await peer.setRemoteDescription(desc);
                 } else {

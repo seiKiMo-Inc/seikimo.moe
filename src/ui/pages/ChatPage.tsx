@@ -372,11 +372,52 @@ class ChatPage extends React.Component<IProps, IState> {
 
         // Create a new call.
         const call = new WebRTC(conversation.id);
+        call.ontrack = this.processTrack.bind(this);
         this.setState({ call });
 
         // Start the call.
         await voiceCall(call);
         withVideo && await videoCall(call);
+    }
+
+    /**
+     * Processes a WebRTC track.
+     *
+     * @param event The track event.
+     */
+    private async processTrack(event: RTCTrackEvent): Promise<void> {
+        // Process all streams.
+        event.streams.forEach(stream => {
+            // Check if the stream is an audio stream.
+            if (stream.getAudioTracks().length > 0) {
+                this.addAudioStream(stream);
+            }
+
+            // Check if the stream is a video stream.
+            if (stream.getVideoTracks().length > 0) {
+                // TODO: Add video stream.
+            }
+        });
+    }
+
+    /**
+     * Adds an audio stream to the call.
+     *
+     * @param stream The stream to add.
+     */
+    private async addAudioStream(stream: MediaStream): Promise<void> {
+        // Check if an audio stream already exists.
+        const element = document.getElementById(stream.id);
+        if (element) return;
+
+        // Create a new audio element.
+        const audio = document.createElement("audio");
+        audio.id = stream.id;
+        audio.srcObject = stream;
+        audio.autoplay = true;
+
+        // Add the audio element.
+        document.body.appendChild(audio);
     }
 
     componentDidMount() {
