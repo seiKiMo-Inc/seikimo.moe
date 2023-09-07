@@ -116,7 +116,7 @@ class Channel extends React.Component<IProps, IState> {
                                  className={"Channel_Conversation"}
                                  onClick={() => this.props.pickConversation?.(index)}
                             >
-                                <Hashtag />
+                                <Hashtag className={"Hashtag mt-[3px]"} />
                                 <p>{channel.name}</p>
                             </div>
                         ))}

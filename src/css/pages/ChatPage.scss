@@ -42,10 +42,29 @@
     @apply flex flex-col;
     @apply h-full w-full;
 
-    padding-top: 15px;
-
     overflow-y: scroll;
-    padding-left: 15px;
+}
+
+.ChatPage_ActionBar {
+    @apply flex flex-row justify-between w-full select-none;
+
+    height: 40px;
+    padding: 5px 15px 5px 15px;
+
+    border-bottom: 1px solid black;
+}
+
+.ChatPage_Action {
+    @apply flex flex-row gap-[15px];
+
+    svg {
+        width: 28px;
+        height: 28px;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
 
 .ChatPage_TextBox {
@@ -59,6 +78,9 @@
     @apply flex flex-col h-full;
 
     justify-content: flex-end;
+
+    margin-left: 5px;
+    margin-bottom: 10px;
 
     padding-bottom: 55px;
     height: 10000px;

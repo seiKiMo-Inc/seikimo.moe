@@ -1,5 +1,9 @@
 import React from "react";
 
+import { MdScreenShare } from "react-icons/md";
+import { BiSolidPhoneCall } from "react-icons/bi";
+import { ReactComponent as Hashtag } from "@icons/hashtag.svg";
+
 import Channel from "@components/chat/Channel";
 import Message from "@components/chat/Message";
 import ContextMenu, { showMenu } from "@components/common/ContextMenu";
@@ -7,6 +11,7 @@ import CreateChannel from "@components/chat/CreateChannel";
 
 import { newCall } from "@app/index";
 import { getCredentials } from "@backend/user";
+import { WebRTC, voiceCall, videoCall } from "@backend/rtc";
 import { base64Decode, openDialog } from "@utils/general";
 import { chatSocket, encode } from "@backend/sockets";
 import {
@@ -35,6 +40,8 @@ interface IState {
 
     selectedChannel: ChannelType | null;
     boxWidth: number;
+
+    call: WebRTC | null;
 }
 
 class ChatPage extends React.Component<IProps, IState> {
@@ -48,7 +55,9 @@ class ChatPage extends React.Component<IProps, IState> {
             conversation: 0,
 
             selectedChannel: null,
-            boxWidth: 0
+            boxWidth: 0,
+
+            call: null
         };
     }
 
@@ -349,6 +358,27 @@ class ChatPage extends React.Component<IProps, IState> {
         this.setState({ boxWidth: width - 15 });
     }
 
+    /**
+     * Starts a basic audio call.
+     *
+     * @param withVideo Should a video call be started?
+     */
+    private async startCall(withVideo: boolean = false): Promise<void> {
+        if (this.state.call) return; // The user is already in a call.
+
+        // Get the conversation.
+        const conversation = this.getConversation();
+        if (!conversation) return;
+
+        // Create a new call.
+        const call = new WebRTC(conversation.id);
+        this.setState({ call });
+
+        // Start the call.
+        await voiceCall(call);
+        withVideo && await videoCall(call);
+    }
+
     componentDidMount() {
         this.updateMessageBox();
         this.applyWidth();
@@ -394,19 +424,41 @@ class ChatPage extends React.Component<IProps, IState> {
                         <p
                             className={"ChatPage_ChannelCreate"}
                             onClick={() => openDialog("createChannel")}
-                        >Create a Channel</p>
+                        >
+                            Create a Channel
+                        </p>
                     </div>
 
                     <div id={"content"} className={"ChatPage_Content"}>
-                        <div className={"ChatPage_MessageList"}>
-                            {this.getMessages().map((message, index) => (
-                                <Message key={index} message={message}
-                                         onContext={() => this.messageContext(message)} />
-                            ))}
+                        <div className={"ChatPage_ActionBar"}>
+                            <div className={"flex flex-row gap-[6px] items-center"}>
+                                <Hashtag className={"Hashtag"} />
+                                <p>
+                                    {this.getConversation()?.name ?? "No Conversation Selected"}
+                                </p>
+                            </div>
+
+                            <div className={"ChatPage_Action"}>
+                                <MdScreenShare
+                                    onClick={() => this.startCall(true)}
+                                />
+                                <BiSolidPhoneCall
+                                    onClick={() => this.startCall()}
+                                />
+                            </div>
+                        </div>
+
+                        <div className={"ChatPage_MessageList pl-[15px]"}>
+                            {
+                                this.getMessages().map((message, index) =>
+                                    <Message key={index} message={message}
+                                             onContext={() => this.messageContext(message)} />
+                                )
+                            }
                         </div>
 
                         <div
-                            className={"ChatPage_TextBox"}
+                            className={"ChatPage_TextBox pl-[15px]"}
                             style={{ width: this.state.boxWidth }}
                         >
                             <textarea

@@ -13,6 +13,7 @@ import LaudiolinPrivacy from "@pages/LaudiolinPrivacy";
 import PasteDisplay from "@pages/PasteDisplay";
 
 import "@css/App.css";
+import "@css/Icons.scss";
 import "highlight.js/styles/github-dark.css";
 import "react-tooltip/dist/react-tooltip.css";
 
