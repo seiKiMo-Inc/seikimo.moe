@@ -1,20 +1,51 @@
 .CallDisplay {
-    @apply flex select-none w-full items-center;
+    @apply flex flex-col select-none w-full p-2;
+
+    padding: 10px;
+    box-sizing: border-box;
 
     background-color: var(--accent-secondary);
     border-bottom: 1px solid black;
 }
 
-.CallDisplay_Users {
-    @apply flex flex-row gap-[15px] justify-center items-center;
-    @apply h-full w-full;
+.CallDisplay_Info {
+    @apply flex flex-row gap-[15px];
+}
 
-    padding: 5px 15px 5px 15px;
+.CallDisplay_Users {
+    @apply flex flex-row gap-[15px];
+    @apply justify-center items-center;
+    @apply h-full w-full;
 
     img {
         width: 80px;
         height: 80px;
 
         border-radius: 100px;
+    }
+}
+
+.CallDisplay_Actions {
+    @apply flex flex-row w-full gap-[15px];
+    @apply self-center items-center justify-center;
+}
+
+.CallDisplay_LeaveCall {
+    @apply flex justify-center items-center;
+
+    width: 48px;
+    height: 48px;
+    border-radius: 100px;
+
+    background-color: #f44336;
+
+    svg {
+        width: 30px;
+        height: 30px;
+        fill: white;
+    }
+
+    &:hover {
+        cursor: pointer;
     }
 }

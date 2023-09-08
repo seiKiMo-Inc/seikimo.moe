@@ -1,11 +1,17 @@
 import React from "react";
 
+import { ReactComponent as Disconnect } from "@icons/disconnect.svg";
+
+import ConversationName from "@components/chat/ConversationName";
+
 import { Conversation } from "@backend/proto/ChatGateway";
 
 import "@css/chat/CallDisplay.scss";
 
 interface IProps {
     conversation: Conversation | undefined;
+
+    leaveCall: () => void;
 }
 
 interface IState {
@@ -25,8 +31,6 @@ class CallDisplay extends React.Component<IProps, IState> {
         const { conversation } = this.props;
         if (!conversation) return undefined;
 
-        console.log(conversation);
-
         return (
             <div className={"CallDisplay"}
                  style={{
@@ -34,7 +38,7 @@ class CallDisplay extends React.Component<IProps, IState> {
                  }}
             >
                 <div className={"CallDisplay_Info"}>
-
+                    <ConversationName conversation={conversation} />
                 </div>
 
                 <div className={"CallDisplay_Users"}>
@@ -51,7 +55,11 @@ class CallDisplay extends React.Component<IProps, IState> {
                 </div>
 
                 <div className={"CallDisplay_Actions"}>
-
+                    <div className={"CallDisplay_LeaveCall"}
+                         onClick={this.props.leaveCall}
+                    >
+                        <Disconnect />
+                    </div>
                 </div>
             </div>
         );

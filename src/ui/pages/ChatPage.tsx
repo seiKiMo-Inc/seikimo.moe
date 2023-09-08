@@ -2,12 +2,12 @@ import React from "react";
 
 import { MdScreenShare } from "react-icons/md";
 import { BiSolidPhoneCall } from "react-icons/bi";
-import { ReactComponent as Hashtag } from "@icons/hashtag.svg";
 
 import Channel from "@components/chat/Channel";
 import Message from "@components/chat/Message";
 import CreateChannel from "@components/chat/CreateChannel";
 import CallDisplay from "@components/chat/CallDisplay";
+import ConversationName from "@components/chat/ConversationName";
 import ContextMenu, { showMenu } from "@components/common/ContextMenu";
 
 import { newCall } from "@app/index";
@@ -437,6 +437,27 @@ class ChatPage extends React.Component<IProps, IState> {
     }
 
     /**
+     * Leaves the current call.
+     */
+    private async leaveCall(): Promise<void> {
+        if (!this.state.call) return; // The user is in a call.
+
+        // Get the conversation.
+        const conversation = this.getConversation();
+        if (!conversation) return;
+
+        // Leave the current call.
+        this.state.call.disconnect();
+        this.setState({ call: null });
+
+        // Leave the call.
+        await fetch(newCall(`conversation/${conversation.id}/call`), {
+            method: "POST", headers: { Authorization: getCredentials().token },
+            body: JSON.stringify({ join: false })
+        });
+    }
+
+    /**
      * Processes a WebRTC track.
      *
      * @param event The track event.
@@ -532,16 +553,12 @@ class ChatPage extends React.Component<IProps, IState> {
                         {
                             conversation && conversation.hasCall ? (
                                 <CallDisplay
-                                    conversation={this.getConversation()}
+                                    conversation={conversation}
+                                    leaveCall={this.leaveCall.bind(this)}
                                 />
                             ) : (
                                 <div className={"ChatPage_ActionBar"}>
-                                    <div className={"flex flex-row gap-[6px] items-center"}>
-                                        <Hashtag className={"Hashtag"} />
-                                        <p>
-                                            {conversation?.name ?? "No Conversation Selected"}
-                                        </p>
-                                    </div>
+                                    <ConversationName conversation={conversation} />
 
                                     <div className={"ChatPage_Action"}>
                                         <MdScreenShare
