@@ -9,6 +9,9 @@ import Footer from "@components/landing/Footer";
 import MusicWidget from "@components/common/MusicWidget";
 import WebChatWidget from "@components/common/WebChatWidget";
 
+import { Mobile } from "@backend/types";
+import { getMobilePlatform, isOnMobile } from "@utils/general";
+
 import "@css/pages/LandingPage.scss";
 
 function Laudiolin() {
@@ -36,7 +39,22 @@ function Laudiolin() {
 
                     <div className={"LandingPage_Buttons"}>
                         <div className={"LandingPage_Open"}
-                             onClick={() => window.open("https://laudiolin.seikimo.moe")}
+                             onClick={() => {
+                                 if (isOnMobile()) {
+                                     // Launch the respective download links.
+                                     switch (getMobilePlatform()) {
+                                         case Mobile.iOS:
+                                             window.open("https://testflight.apple.com/join/dKGTNWB4");
+                                             return;
+                                         case Mobile.Android:
+                                             window.open("https://seikimo.moe/laudiolin.apk");
+                                             return;
+                                     }
+                                 } else {
+                                     // Launch the desktop app.
+                                     window.open("https://laudiolin.seikimo.moe");
+                                 }
+                             }}
                         >
                             <MdLaunch />
 

@@ -60,6 +60,12 @@ export type OldPaste = {
     name: string;
 };
 
+export enum Mobile {
+    Android,
+    iOS,
+    Unknown
+}
+
 /** Name -> Internal */
 export const Languages: { [key: string]: string } = {
     "Auto Detect": "auto",

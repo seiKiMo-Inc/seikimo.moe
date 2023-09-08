@@ -1,4 +1,5 @@
 import { isDevelopment } from "@app/index";
+import { Mobile } from "@backend/types";
 
 /**
  * Prepares a WebSocket socket URI.
@@ -101,6 +102,15 @@ export function base64Decode(data: string): ArrayBuffer {
  */
 export function isOnMobile(): boolean {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+/**
+ * Gets the mobile platform the user is on.
+ */
+export function getMobilePlatform(): Mobile {
+    if (navigator.userAgent.includes("Android")) return Mobile.Android;
+    else if (navigator.userAgent.includes("iPhone")) return Mobile.iOS;
+    else return Mobile.Unknown;
 }
 
 /**
