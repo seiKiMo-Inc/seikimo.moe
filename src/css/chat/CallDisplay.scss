@@ -1,0 +1,20 @@
+.CallDisplay {
+    @apply flex select-none w-full items-center;
+
+    background-color: var(--accent-secondary);
+    border-bottom: 1px solid black;
+}
+
+.CallDisplay_Users {
+    @apply flex flex-row gap-[15px] justify-center items-center;
+    @apply h-full w-full;
+
+    padding: 5px 15px 5px 15px;
+
+    img {
+        width: 80px;
+        height: 80px;
+
+        border-radius: 100px;
+    }
+}

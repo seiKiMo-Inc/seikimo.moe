@@ -6,8 +6,9 @@ import { ReactComponent as Hashtag } from "@icons/hashtag.svg";
 
 import Channel from "@components/chat/Channel";
 import Message from "@components/chat/Message";
-import ContextMenu, { showMenu } from "@components/common/ContextMenu";
 import CreateChannel from "@components/chat/CreateChannel";
+import CallDisplay from "@components/chat/CallDisplay";
+import ContextMenu, { showMenu } from "@components/common/ContextMenu";
 
 import { newCall } from "@app/index";
 import { getCredentials } from "@backend/user";
@@ -23,7 +24,7 @@ import {
     ChannelScNotify,
     MessageScNotify,
     PacketIds,
-    Retcode, Action
+    Retcode, Action, ConversationScNotify
 } from "@backend/proto/ChatGateway";
 
 import "@css/pages/ChatPage.scss";
@@ -42,6 +43,7 @@ interface IState {
     boxWidth: number;
 
     call: WebRTC | null;
+    callHeight: string | number | null;
 }
 
 class ChatPage extends React.Component<IProps, IState> {
@@ -57,7 +59,8 @@ class ChatPage extends React.Component<IProps, IState> {
             selectedChannel: null,
             boxWidth: 0,
 
-            call: null
+            call: null,
+            callHeight: "300vh"
         };
     }
 
@@ -106,12 +109,21 @@ class ChatPage extends React.Component<IProps, IState> {
     /**
      * Gets the current conversation.
      */
-    private getConversation(): Conversation | null {
-        const { channels, channel, conversation } = this.state;
+    private getConversation(): Conversation | undefined {
+        const { conversation } = this.state;
+        // Get the selected channel.
+        return this.getChannel()?.conversations[conversation];
+    }
+
+    /**
+     * Gets the current channel.
+     */
+    private getChannel(): ChannelType | null {
+        const { channels, channel } = this.state;
         // Check if a channel is selected.
         if (channel == -1) return null;
         // Get the selected channel.
-        return channels[channel]?.conversations[conversation];
+        return channels[channel];
     }
 
     /**
@@ -293,6 +305,44 @@ class ChatPage extends React.Component<IProps, IState> {
                 // Update the user interface.
                 this.forceUpdate();
                 return;
+            case PacketIds._ConversationScNotify:
+                this.updateConversation(ConversationScNotify.fromBinary(packetData))
+                    .then(() => this.forceUpdate())
+                    .catch(err => console.error(err));
+                return;
+        }
+    }
+
+    /**
+     * Invoked when a conversation should be updated.
+     *
+     * @param packet The packet.
+     */
+    private async updateConversation(packet: ConversationScNotify): Promise<void> {
+        const { action, conversation: updated } = packet;
+        if (!action || !updated) throw new Error("Invalid packet.");
+
+        // Check if the conversation exists.
+        const channel = this.getChannel();
+        if (!channel) throw new Error("Channel not found.");
+
+        const referenced = channel.conversations.filter(c => c.id == updated.id);
+        if (!referenced || referenced.length == 0) throw new Error("Conversation not found.");
+        const conversation = referenced[0];
+
+        // Perform the action.
+        switch (action) {
+            case Action.CALL_START:
+                conversation.hasCall = true;
+                return;
+            case Action.CALL_END:
+                conversation.hasCall = false;
+                return;
+            case Action.CALL_PARTICIPANT_ADD:
+            case Action.CALL_PARTICIPANT_REMOVE:
+            case Action.CALL_PARTICIPANT_UPDATE:
+                conversation.callParticipants = updated.callParticipants;
+                return;
         }
     }
 
@@ -378,6 +428,12 @@ class ChatPage extends React.Component<IProps, IState> {
         // Start the call.
         await voiceCall(call);
         withVideo && await videoCall(call);
+
+        // Join the call.
+        await fetch(newCall(`conversation/${conversation.id}/call`), {
+            method: "POST", headers: { Authorization: getCredentials().token },
+            body: JSON.stringify({ join: true })
+        });
     }
 
     /**
@@ -441,6 +497,8 @@ class ChatPage extends React.Component<IProps, IState> {
     }
 
     render() {
+        const conversation = this.getConversation();
+
         return (
             <>
                 <CreateChannel />
@@ -471,23 +529,31 @@ class ChatPage extends React.Component<IProps, IState> {
                     </div>
 
                     <div id={"content"} className={"ChatPage_Content"}>
-                        <div className={"ChatPage_ActionBar"}>
-                            <div className={"flex flex-row gap-[6px] items-center"}>
-                                <Hashtag className={"Hashtag"} />
-                                <p>
-                                    {this.getConversation()?.name ?? "No Conversation Selected"}
-                                </p>
-                            </div>
+                        {
+                            conversation && conversation.hasCall ? (
+                                <CallDisplay
+                                    conversation={this.getConversation()}
+                                />
+                            ) : (
+                                <div className={"ChatPage_ActionBar"}>
+                                    <div className={"flex flex-row gap-[6px] items-center"}>
+                                        <Hashtag className={"Hashtag"} />
+                                        <p>
+                                            {conversation?.name ?? "No Conversation Selected"}
+                                        </p>
+                                    </div>
 
-                            <div className={"ChatPage_Action"}>
-                                <MdScreenShare
-                                    onClick={() => this.startCall(true)}
-                                />
-                                <BiSolidPhoneCall
-                                    onClick={() => this.startCall()}
-                                />
-                            </div>
-                        </div>
+                                    <div className={"ChatPage_Action"}>
+                                        <MdScreenShare
+                                            onClick={() => this.startCall(true)}
+                                        />
+                                        <BiSolidPhoneCall
+                                            onClick={() => this.startCall()}
+                                        />
+                                    </div>
+                                </div>
+                            )
+                        }
 
                         <div className={"ChatPage_MessageList pl-[15px]"}>
                             {

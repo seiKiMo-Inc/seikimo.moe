@@ -1,14 +1,23 @@
+html {
+    /* Variables */
+    --bg-color: #191919;
+    --bg-color2: #1A1A1A;
+
+    --accent-bg: #262626;
+    --accent-primary: #404040;
+    --accent-secondary: #333333;
+}
+
 .ChatPage {
     @apply flex flex-row justify-between;
     @apply h-screen w-full;
 
-    background-color: #262626;
+    background-color: var(--accent-bg);
     font-family: Poppins, sans-serif;
 
     /* Variables */
 
     --width: 300px;
-    --pane-width: #191919;
 }
 
 .ChatPage_LeftPane {
@@ -21,7 +30,7 @@
     padding-bottom: 10px;
 
     max-width: var(--width);
-    background-color: var(--pane-width);
+    background-color: var(--bg-color);
 
     &::-webkit-scrollbar {
         @apply hidden;
@@ -119,5 +128,5 @@
     @apply h-full w-screen;
 
     max-width: var(--width);
-    background-color: var(--pane-width);
+    background-color: var(--bg-color);
 }
