@@ -25,6 +25,10 @@ export interface Profile {
      * @generated from protobuf field: string icon = 2;
      */
     icon: string;
+    /**
+     * @generated from protobuf field: CallInfo call_info = 3;
+     */
+    callInfo?: CallInfo;
 }
 /**
  * @generated from protobuf message Channel
@@ -72,9 +76,9 @@ export interface Conversation {
      */
     hasCall: boolean;
     /**
-     * @generated from protobuf field: repeated Profile participants = 4;
+     * @generated from protobuf field: repeated Profile call_participants = 4;
      */
-    participants: Profile[];
+    callParticipants: Profile[];
     /**
      * @generated from protobuf field: repeated Message messages = 5;
      */
@@ -100,6 +104,27 @@ export interface Message {
      * @generated from protobuf field: int64 timestamp = 4;
      */
     timestamp: bigint;
+}
+/**
+ * @generated from protobuf message CallInfo
+ */
+export interface CallInfo {
+    /**
+     * @generated from protobuf field: bool muted = 1;
+     */
+    muted: boolean;
+    /**
+     * @generated from protobuf field: bool deafened = 2;
+     */
+    deafened: boolean;
+    /**
+     * @generated from protobuf field: bool video_enabled = 3;
+     */
+    videoEnabled: boolean;
+    /**
+     * @generated from protobuf field: bool sharing_screen = 4;
+     */
+    sharingScreen: boolean;
 }
 // Packet messages. 
 
@@ -160,6 +185,19 @@ export interface ChannelScNotify {
     action: Action;
 }
 /**
+ * @generated from protobuf message ConversationScNotify
+ */
+export interface ConversationScNotify {
+    /**
+     * @generated from protobuf field: Conversation conversation = 1;
+     */
+    conversation?: Conversation;
+    /**
+     * @generated from protobuf field: Action action = 2;
+     */
+    action: Action;
+}
+/**
  * @generated from protobuf enum Retcode
  */
 export enum Retcode {
@@ -197,7 +235,27 @@ export enum Action {
     /**
      * @generated from protobuf enum value: UPDATE_LAST = 3;
      */
-    UPDATE_LAST = 3
+    UPDATE_LAST = 3,
+    /**
+     * @generated from protobuf enum value: CALL_START = 4;
+     */
+    CALL_START = 4,
+    /**
+     * @generated from protobuf enum value: CALL_END = 5;
+     */
+    CALL_END = 5,
+    /**
+     * @generated from protobuf enum value: CALL_PARTICIPANT_ADD = 6;
+     */
+    CALL_PARTICIPANT_ADD = 6,
+    /**
+     * @generated from protobuf enum value: CALL_PARTICIPANT_REMOVE = 7;
+     */
+    CALL_PARTICIPANT_REMOVE = 7,
+    /**
+     * @generated from protobuf enum value: CALL_PARTICIPANT_UPDATE = 8;
+     */
+    CALL_PARTICIPANT_UPDATE = 8
 }
 /**
  * @generated from protobuf enum PacketIds
@@ -218,14 +276,19 @@ export enum PacketIds {
     /**
      * @generated from protobuf enum value: _ChannelScNotify = 3;
      */
-    _ChannelScNotify = 3
+    _ChannelScNotify = 3,
+    /**
+     * @generated from protobuf enum value: _ConversationScNotify = 4;
+     */
+    _ConversationScNotify = 4
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class Profile$Type extends MessageType<Profile> {
     constructor() {
         super("Profile", [
             { no: 1, name: "displayName", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "icon", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "icon", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "call_info", kind: "message", T: () => CallInfo }
         ]);
     }
     create(value?: PartialMessage<Profile>): Profile {
@@ -246,6 +309,9 @@ class Profile$Type extends MessageType<Profile> {
                 case /* string icon */ 2:
                     message.icon = reader.string();
                     break;
+                case /* CallInfo call_info */ 3:
+                    message.callInfo = CallInfo.internalBinaryRead(reader, reader.uint32(), options, message.callInfo);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -264,6 +330,9 @@ class Profile$Type extends MessageType<Profile> {
         /* string icon = 2; */
         if (message.icon !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.icon);
+        /* CallInfo call_info = 3; */
+        if (message.callInfo)
+            CallInfo.internalBinaryWrite(message.callInfo, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -363,12 +432,12 @@ class Conversation$Type extends MessageType<Conversation> {
             { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "has_call", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 4, name: "participants", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Profile },
+            { no: 4, name: "call_participants", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Profile },
             { no: 5, name: "messages", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Message }
         ]);
     }
     create(value?: PartialMessage<Conversation>): Conversation {
-        const message = { id: "", name: "", hasCall: false, participants: [], messages: [] };
+        const message = { id: "", name: "", hasCall: false, callParticipants: [], messages: [] };
         globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial<Conversation>(this, message, value);
@@ -388,8 +457,8 @@ class Conversation$Type extends MessageType<Conversation> {
                 case /* bool has_call */ 3:
                     message.hasCall = reader.bool();
                     break;
-                case /* repeated Profile participants */ 4:
-                    message.participants.push(Profile.internalBinaryRead(reader, reader.uint32(), options));
+                case /* repeated Profile call_participants */ 4:
+                    message.callParticipants.push(Profile.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 case /* repeated Message messages */ 5:
                     message.messages.push(Message.internalBinaryRead(reader, reader.uint32(), options));
@@ -415,9 +484,9 @@ class Conversation$Type extends MessageType<Conversation> {
         /* bool has_call = 3; */
         if (message.hasCall !== false)
             writer.tag(3, WireType.Varint).bool(message.hasCall);
-        /* repeated Profile participants = 4; */
-        for (let i = 0; i < message.participants.length; i++)
-            Profile.internalBinaryWrite(message.participants[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* repeated Profile call_participants = 4; */
+        for (let i = 0; i < message.callParticipants.length; i++)
+            Profile.internalBinaryWrite(message.callParticipants[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
         /* repeated Message messages = 5; */
         for (let i = 0; i < message.messages.length; i++)
             Message.internalBinaryWrite(message.messages[i], writer.tag(5, WireType.LengthDelimited).fork(), options).join();
@@ -499,6 +568,74 @@ class Message$Type extends MessageType<Message> {
  * @generated MessageType for protobuf message Message
  */
 export const Message = new Message$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CallInfo$Type extends MessageType<CallInfo> {
+    constructor() {
+        super("CallInfo", [
+            { no: 1, name: "muted", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "deafened", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 3, name: "video_enabled", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "sharing_screen", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CallInfo>): CallInfo {
+        const message = { muted: false, deafened: false, videoEnabled: false, sharingScreen: false };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<CallInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CallInfo): CallInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* bool muted */ 1:
+                    message.muted = reader.bool();
+                    break;
+                case /* bool deafened */ 2:
+                    message.deafened = reader.bool();
+                    break;
+                case /* bool video_enabled */ 3:
+                    message.videoEnabled = reader.bool();
+                    break;
+                case /* bool sharing_screen */ 4:
+                    message.sharingScreen = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CallInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* bool muted = 1; */
+        if (message.muted !== false)
+            writer.tag(1, WireType.Varint).bool(message.muted);
+        /* bool deafened = 2; */
+        if (message.deafened !== false)
+            writer.tag(2, WireType.Varint).bool(message.deafened);
+        /* bool video_enabled = 3; */
+        if (message.videoEnabled !== false)
+            writer.tag(3, WireType.Varint).bool(message.videoEnabled);
+        /* bool sharing_screen = 4; */
+        if (message.sharingScreen !== false)
+            writer.tag(4, WireType.Varint).bool(message.sharingScreen);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message CallInfo
+ */
+export const CallInfo = new CallInfo$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class AuthenticateCsReq$Type extends MessageType<AuthenticateCsReq> {
     constructor() {
@@ -722,3 +859,57 @@ class ChannelScNotify$Type extends MessageType<ChannelScNotify> {
  * @generated MessageType for protobuf message ChannelScNotify
  */
 export const ChannelScNotify = new ChannelScNotify$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class ConversationScNotify$Type extends MessageType<ConversationScNotify> {
+    constructor() {
+        super("ConversationScNotify", [
+            { no: 1, name: "conversation", kind: "message", T: () => Conversation },
+            { no: 2, name: "action", kind: "enum", T: () => ["Action", Action] }
+        ]);
+    }
+    create(value?: PartialMessage<ConversationScNotify>): ConversationScNotify {
+        const message = { action: 0 };
+        globalThis.Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial<ConversationScNotify>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ConversationScNotify): ConversationScNotify {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* Conversation conversation */ 1:
+                    message.conversation = Conversation.internalBinaryRead(reader, reader.uint32(), options, message.conversation);
+                    break;
+                case /* Action action */ 2:
+                    message.action = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ConversationScNotify, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* Conversation conversation = 1; */
+        if (message.conversation)
+            Conversation.internalBinaryWrite(message.conversation, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* Action action = 2; */
+        if (message.action !== 0)
+            writer.tag(2, WireType.Varint).int32(message.action);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message ConversationScNotify
+ */
+export const ConversationScNotify = new ConversationScNotify$Type();
