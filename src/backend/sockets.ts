@@ -10,6 +10,8 @@ let _webChatSocket: WebSocket | null = null;
  * @param conversation The conversation ID.
  */
 export function rtcSocket(conversation: string): WebSocket {
+    if (_rtcSocket?.readyState == WebSocket.CLOSED) _rtcSocket = null;
+
     return _rtcSocket ?? reconnect(_rtcSocket,
         (socket) => _rtcSocket = socket,
         () => _rtcSocket = new WebSocket(newSocket(`chat/rtc/${conversation}`))

@@ -74,6 +74,14 @@ export class WebRTC {
     }
 
     /**
+     * Disconnects from the peer.
+     */
+    disconnect(): void {
+        this.peer.close();
+        this.signaling.handle.close();
+    }
+
+    /**
      * Configures the peer & signaling server.
      */
     private configure(): void {
