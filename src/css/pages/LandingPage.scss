@@ -13,6 +13,20 @@
     @apply w-full h-full;
 }
 
+.LandingPage_Image {
+    @apply absolute;
+
+    width: 384px;
+    height: 384px;
+
+    left: 10%;
+
+    background: var(--bg-color);
+
+    border-radius: 100%;
+    align-self: center;
+}
+
 .LandingPage_TextContainer {
     @apply flex flex-col;
 
@@ -55,6 +69,15 @@
 }
 
 @media screen and (max-width: 1200px) {
+    .LandingPage_Image {
+        display: none;
+    }
+
+    .LandingPage_Container {
+        @apply flex flex-col justify-center items-center;
+        @apply w-full h-full p-0;
+    }
+
     .LandingPage_Segment {
         background-size: cover !important;
         background-repeat: no-repeat !important;

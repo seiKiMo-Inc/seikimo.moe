@@ -20,6 +20,12 @@ function Laudiolin() {
             <div className={"LandingPage_Container"}
                  style={{ background: "linear-gradient(90deg, transparent, #4d7bd6)" }}
             >
+                <img
+                    className={"LandingPage_Image"}
+                    src={"laudiolin.png"}
+                    alt={"Laudiolin"}
+                />
+
                 <div className={"LandingPage_TextContainer"}
                      style={{ alignItems: "end", textAlign: "end", marginLeft: "50%" }}
                 >
