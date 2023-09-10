@@ -43,6 +43,7 @@ interface IState {
     boxWidth: number;
 
     call: WebRTC | null;
+    callingIn: string | null;
     callHeight: string | number | null;
 }
 
@@ -60,6 +61,7 @@ class ChatPage extends React.Component<IProps, IState> {
             boxWidth: 0,
 
             call: null,
+            callingIn: null,
             callHeight: "300vh"
         };
     }
@@ -413,7 +415,7 @@ class ChatPage extends React.Component<IProps, IState> {
      *
      * @param withVideo Should a video call be started?
      */
-    private async startCall(withVideo: boolean = false): Promise<void> {
+    private async joinCall(withVideo: boolean = false): Promise<void> {
         if (this.state.call) return; // The user is already in a call.
 
         // Get the conversation.
@@ -423,17 +425,17 @@ class ChatPage extends React.Component<IProps, IState> {
         // Create a new call.
         const call = new WebRTC(conversation.id);
         call.ontrack = this.processTrack.bind(this);
-        this.setState({ call });
-
-        // Start the call.
-        await voiceCall(call);
-        withVideo && await videoCall(call);
+        this.setState({ call, callingIn: conversation.id });
 
         // Join the call.
         await fetch(newCall(`conversation/${conversation.id}/call`), {
             method: "POST", headers: { Authorization: getCredentials().token },
             body: JSON.stringify({ join: true })
         });
+
+        // Start the call.
+        await voiceCall(call);
+        withVideo && await videoCall(call);
     }
 
     /**
@@ -448,7 +450,7 @@ class ChatPage extends React.Component<IProps, IState> {
 
         // Leave the current call.
         this.state.call.disconnect();
-        this.setState({ call: null });
+        this.setState({ call: null, callingIn: null });
 
         // Leave the call.
         await fetch(newCall(`conversation/${conversation.id}/call`), {
@@ -554,20 +556,28 @@ class ChatPage extends React.Component<IProps, IState> {
                             conversation && conversation.hasCall ? (
                                 <CallDisplay
                                     conversation={conversation}
+                                    isInCall={conversation.id == this.state.callingIn}
+                                    joinCall={this.joinCall.bind(this)}
                                     leaveCall={this.leaveCall.bind(this)}
                                 />
                             ) : (
                                 <div className={"ChatPage_ActionBar"}>
                                     <ConversationName conversation={conversation} />
 
-                                    <div className={"ChatPage_Action"}>
-                                        <MdScreenShare
-                                            onClick={() => this.startCall(true)}
-                                        />
-                                        <BiSolidPhoneCall
-                                            onClick={() => this.startCall()}
-                                        />
-                                    </div>
+                                    {
+                                        conversation && (
+                                            <div className={"ChatPage_Action"}>
+                                                <MdScreenShare
+                                                    className={"Dim"}
+                                                    onClick={() => this.joinCall(true)}
+                                                />
+                                                <BiSolidPhoneCall
+                                                    className={"Dim"}
+                                                    onClick={() => this.joinCall()}
+                                                />
+                                            </div>
+                                        )
+                                    }
                                 </div>
                             )
                         }

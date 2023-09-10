@@ -95,6 +95,7 @@ class Channel extends React.Component<IProps, IState> {
                     <img alt={"Channel Icon"}
                          className={"Channel_Icon"}
                          src={channel.icon}
+                         draggable={false}
                     />
 
                     <div className={"Channel_Content"}>

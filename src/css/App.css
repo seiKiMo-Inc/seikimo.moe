@@ -31,3 +31,11 @@ body {
     width: 100%;
     height: 100vh;
 }
+
+.Dim {
+    transition: all 0.2s ease;
+
+    &:hover {
+        filter: brightness(80%);
+    }
+}

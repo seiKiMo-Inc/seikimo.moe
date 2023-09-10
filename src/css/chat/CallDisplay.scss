@@ -30,14 +30,12 @@
     @apply self-center items-center justify-center;
 }
 
-.CallDisplay_LeaveCall {
+.CallDisplay_CallAction {
     @apply flex justify-center items-center;
 
     width: 48px;
     height: 48px;
     border-radius: 100px;
-
-    background-color: #f44336;
 
     svg {
         width: 30px;
