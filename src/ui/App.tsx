@@ -14,7 +14,7 @@ import LaudiolinPrivacy from "@pages/LaudiolinPrivacy";
 
 import PasteDisplay from "@pages/PasteDisplay";
 
-import "@css/App.css";
+import "@css/App.scss";
 import "@css/Icons.scss";
 
 import "highlight.js/styles/github-dark.css";
