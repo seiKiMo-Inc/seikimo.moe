@@ -68,6 +68,8 @@ class Navigation extends React.Component<{}, IState> {
     }
 
     render() {
+        const win = window as any;
+
         return (
             <>
                 <div id={"navBar"} className={"NavigationBar"}>
@@ -85,33 +87,37 @@ class Navigation extends React.Component<{}, IState> {
                                 <p>Laudiolin</p>
                             </div>
 
-                            <div className={"NavigationBar_Page"}
-                                 onClick={() => launch("chat")}
-                            >
-                                <p>Chat</p>
-                            </div>
+                            { win["chat"] && (
+                                <div className={"NavigationBar_Page"}
+                                     onClick={() => launch("chat")}
+                                >
+                                    <p>Chat</p>
+                                </div>
+                            ) }
 
-                            <div className={"NavigationBar_Page"}
-                                 onClick={() => launch("upload")}
-                            >
-                                <p>Upload</p>
-                            </div>
+                            { win["upload"] && (
+                                <div className={"NavigationBar_Page"}
+                                     onClick={() => launch("upload")}
+                                >
+                                    <p>Upload</p>
+                                </div>
+                            )}
 
-                            <div className={"NavigationBar_Page"}
-                                 onClick={() => launch("paste")}
-                            >
-                                <p>Paste</p>
-                            </div>
+                            { win["paste"] && (
+                                <div className={"NavigationBar_Page"}
+                                     onClick={() => launch("paste")}
+                                >
+                                    <p>Paste</p>
+                                </div>
+                            ) }
 
-                            {
-                                (window as any)["account"] != null && (
-                                    <div className={"NavigationBar_Page"}
-                                         onClick={() => launch("account")}
-                                    >
-                                        <p>Account</p>
-                                    </div>
-                                )
-                            }
+                            { win["account"] && (
+                                <div className={"NavigationBar_Page"}
+                                     onClick={() => launch("account")}
+                                >
+                                    <p>Account</p>
+                                </div>
+                            ) }
                         </div>
                     ) : (
                         <>
