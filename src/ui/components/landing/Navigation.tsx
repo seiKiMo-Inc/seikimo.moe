@@ -76,7 +76,7 @@ class Navigation extends React.Component<{}, IState> {
                     {!isOnMobile() ? (
                         <div className={"NavigationBar_Container"}>
                             <div className={"NavigationBar_Page"}
-                                 onClick={() => router.navigate("/")}
+                                 onClick={() => scrollTo("home")}
                             >
                                 <p>Home</p>
                             </div>

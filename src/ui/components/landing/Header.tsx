@@ -9,6 +9,7 @@ class Header extends React.Component {
     render() {
         return (
             <div
+                id={"home"}
                 className="Header"
                 onLoad={() => {
                     spawnSnow(defaultDensity, document.getElementById("snow") as HTMLDivElement);
