@@ -29,7 +29,7 @@ export function newCall(route: string): string {
 export function expectedOrigin(): string {
     return isDevelopment() ?
         "http://localhost:3000" :
-        "https://seikimo.moe";
+        window.origin;
 }
 
 const root = ReactDOM.createRoot(
