@@ -8,12 +8,15 @@ import LoginPage from "@pages/LoginPage";
 import PastePage from "@pages/PastePage";
 import UploadPage from "@pages/UploadPage";
 import Donations from "@pages/Donations";
+import DeleteAccount from "@pages/DeleteAccount";
+import LaudiolinTerms from "@pages/LaudiolinTerms";
 import LaudiolinPrivacy from "@pages/LaudiolinPrivacy";
 
 import PasteDisplay from "@pages/PasteDisplay";
 
 import "@css/App.css";
 import "@css/Icons.scss";
+
 import "highlight.js/styles/github-dark.css";
 import "react-tooltip/dist/react-tooltip.css";
 
@@ -27,7 +30,10 @@ class App extends React.PureComponent {
                 <Route path={"/paste"} element={<PastePage />} />
                 <Route path={"/upload"} element={<UploadPage />} />
                 <Route path={"/donate"} element={<Donations />} />
-                <Route path={"/laudiolin-privacy"} element={<LaudiolinPrivacy />} />
+                <Route path={"/account/delete"} element={<DeleteAccount />} />
+
+                <Route path={"/terms/laudiolin"} element={<LaudiolinTerms />} />
+                <Route path={"/privacy/laudiolin"} element={<LaudiolinPrivacy />} />
 
                 <Route path={"/paste/:id"} element={<PasteDisplay />} />
                 <Route path={"/login/:srv"} element={<LoginPage />} />
