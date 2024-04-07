@@ -19,6 +19,7 @@ interface IProps {
 interface IState {
     username: string;
     password: string;
+    status: string | null;
 }
 
 class LoginPage extends React.Component<IProps, IState> {
@@ -27,7 +28,8 @@ class LoginPage extends React.Component<IProps, IState> {
 
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            status: null
         };
     }
 
@@ -83,7 +85,8 @@ class LoginPage extends React.Component<IProps, IState> {
 
             // Check if the login was successful.
             if (response.status != 200) {
-                // TODO: Display login error.
+                this.setState({ status: "Invalid account. Double-check the username & password!" });
+                setTimeout(() => this.setState({ status: null }), 5000);
                 return;
             }
 
@@ -95,7 +98,8 @@ class LoginPage extends React.Component<IProps, IState> {
             // Redirect to the redirect URL.
             window.location.href = this.getRedirectUrl();
         } catch (e) {
-            // TODO: Display login error.
+            this.setState({ status: "An error occurred while logging in. Please try again later." });
+            setTimeout(() => this.setState({ status: null }), 5000);
         }
     }
 
@@ -179,6 +183,12 @@ class LoginPage extends React.Component<IProps, IState> {
                             <button>Log in</button>
                         </form>
                     </div>
+
+                    { this.state.status && (
+                        <span className={"text-red-500"}>
+                            {this.state.status}
+                        </span>
+                    )}
 
                     <div className={"LoginPage_Divider"}>
                         <div className={"LoginPage_Line"}></div>
