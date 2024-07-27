@@ -10,11 +10,11 @@ import "@css/landing/Navigation.scss"
  *
  * @param uri The URI to redirect the user to.
  */
-function launch(uri: string): void {
+async function launch(uri: string): Promise<void> {
     if (uri.includes("://")) {
         window.location.replace(uri);
     } else {
-        window.location.replace(`${expectedOrigin()}/${uri}`);
+        await router.navigate(`/${uri}`);
     }
 }
 
@@ -111,13 +111,11 @@ class Navigation extends React.Component<{}, IState> {
                                 </div>
                             ) }
 
-                            { win["account"] && (
-                                <div className={"NavigationBar_Page"}
-                                     onClick={() => launch("account")}
-                                >
-                                    <p>Account</p>
-                                </div>
-                            ) }
+                            <div className={"NavigationBar_Page"}
+                                 onClick={() => launch("login")}
+                            >
+                                <p>Account</p>
+                            </div>
                         </div>
                     ) : (
                         <>
