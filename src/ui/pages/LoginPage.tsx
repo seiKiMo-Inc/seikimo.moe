@@ -6,7 +6,7 @@ import OrDivider from "@components/OrDivider";
 import SocialLogins from "@components/SocialLogins";
 
 import { newCall } from "@app/index";
-import { getRedirectUrl } from "@utils/login";
+import { getRedirectUrl, handoffCode } from "@utils/login";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 import type { AccountCredentials } from "@backend/types";
 
@@ -72,10 +72,11 @@ class LoginPage extends React.Component<IProps, IState> {
             // Parse the response.
             const data = await response.json() as AccountCredentials;
             // Store the credentials in the session.
-            localStorage.setItem("credentials", JSON.stringify(data));
+            const credentials = JSON.stringify(data);
+            localStorage.setItem("credentials", credentials);
 
             // Redirect to the redirect URL.
-            window.location.replace(getRedirectUrl());
+            window.location.replace(getRedirectUrl(handoffCode() ? btoa(credentials) : undefined));
         } catch (e) {
             this.setState({ status: "An error occurred while logging in. Please try again later." });
             setTimeout(() => this.setState({ status: null }), 5000);

@@ -42,8 +42,7 @@ function socialLogin(route: string, name: string): void {
         // Encode the credentials.
         const encoded = btoa(credentials);
         // Redirect to the redirect URL.
-        window.location.replace(getRedirectUrl() +
-            (handoffCode() ? `?handoff=${encoded}` : ""));
+        window.location.replace(getRedirectUrl(handoffCode() ? encoded : undefined));
     });
 }
 

@@ -2,16 +2,22 @@
  * Reads the 'redirect' query parameter.
  * Defaults to 'seikimo.moe/'.
  */
-export function getRedirectUrl(): string {
+export function getRedirectUrl(handoff?: string): string {
     const location = window.location;
     const url = new URLSearchParams(location.search);
     let redirect = url.get("redirect");
 
     // Check if the redirect is valid.
     if (!redirect || redirect == "") return "https://seikimo.moe/";
-    if (!redirect.includes("https://") && !redirect.includes("http://"))
+    if (!redirect.includes("https://") && !redirect.includes("http://")) {
         redirect = `${location.href.includes("localhost") ?
             "http" : window.isSecureContext ? "https" : "http"}://` + redirect;
+    }
+
+    // Check if the handoff code is set.
+    if (handoff) {
+        redirect += `?handoff=${handoff}`;
+    }
 
     return redirect;
 }
