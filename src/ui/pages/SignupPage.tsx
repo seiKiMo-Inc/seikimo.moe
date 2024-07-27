@@ -98,12 +98,14 @@ function SignupPage() {
     const [confirm, setConfirm] = useState("");
 
     useEffect(() => {
-        spawnSnow(defaultDensity, document.getElementById("snow") as HTMLDivElement);
+        const snowDiv = document.getElementById("snow") as HTMLDivElement;
+
+        spawnSnow(defaultDensity, snowDiv);
         spawnSnowCSS(defaultDensity, "SignupPage");
 
         return () => {
-            document.getElementById("snow")?.remove();
-            document.getElementById("snow-css")?.remove();
+            // Clear the children of the snow div.
+            snowDiv.innerHTML = "";
         };
     });
 
