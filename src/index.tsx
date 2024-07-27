@@ -10,7 +10,7 @@ import App from "@app/ui/App";
 /**
  * Returns true if the current environment is a development environment.
  */
-export function isDevelopment(): boolean {
+function isDevelopment(): boolean {
     return process.env.NODE_ENV === "development";
 }
 
@@ -28,8 +28,17 @@ export function newCall(route: string): string {
  */
 export function expectedOrigin(): string {
     return isDevelopment() ?
-        "http://localhost:3000" :
+        import.meta.env.VITE_DEV_URL :
         window.origin;
+}
+
+/**
+ * Fetches the WebSocket URL for the current environment.
+ */
+export function expectedSocketOrigin(): string {
+    return isDevelopment() ?
+        import.meta.env.VITE_DEV_WSS :
+        `${window.isSecureContext ? "wss" : "ws"}://${window.location.host}`
 }
 
 const root = ReactDOM.createRoot(

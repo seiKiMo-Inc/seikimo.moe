@@ -1,4 +1,4 @@
-import { isDevelopment } from "@app/index";
+import { expectedSocketOrigin } from "@app/index";
 import { Mobile } from "@backend/types";
 
 /**
@@ -7,8 +7,7 @@ import { Mobile } from "@backend/types";
  * @param route The route to the WebSocket server.
  */
 export function newSocket(route: string): string {
-    return isDevelopment() ? `ws://localhost:3000/${route}` :
-        `${window.isSecureContext ? "wss" : "ws"}://${window.location.host}/${route}`;
+    return `${expectedSocketOrigin()}/${route}`;
 }
 
 /**

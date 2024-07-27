@@ -1,7 +1,5 @@
 import type { AccountCredentials, Member } from "@backend/types";
-import { isDevelopment } from "@app/index";
-
-const MEMBERS_URL = isDevelopment() ? `http://localhost:3000/org` : `${window.location.href}org`;
+import { expectedOrigin } from "@app/index";
 
 /**
  * Gets the account credentials from the local storage.
@@ -20,7 +18,7 @@ export function getCredentials(): AccountCredentials {
  * Fetches all members in the GitHub organization.
  */
 export async function getAllMembers(): Promise<Member[]> {
-    const response = await fetch(MEMBERS_URL, {
+    const response = await fetch(`${expectedOrigin()}/org`, {
         method: 'GET', headers: { 'Content-Type': 'application/json', }
     });
 
