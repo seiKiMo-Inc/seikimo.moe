@@ -2,7 +2,7 @@ import tailwind from "tailwindcss";
 import autoprefixer from "autoprefixer";
 import cssnanoPlugin from "cssnano";
 
-import tailwindConfig from "./tailwind.config.js";
+import tailwindConfig from "./tailwind.config";
 const mode = process.env.NODE_ENV;
 const dev = mode === "development";
 
