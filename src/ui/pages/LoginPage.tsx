@@ -1,21 +1,23 @@
 import React from "react";
-import Turnstile from "react-turnstile";
-import { Link } from "react-router-dom";
+import Turnstile, { useTurnstile } from "react-turnstile";
+import { Link, useParams } from "react-router-dom";
 
 import OrDivider from "@components/OrDivider";
 import SocialLogins from "@components/SocialLogins";
-import RouterComponent from "@components/common/RouterComponent";
 
 import { newCall } from "@app/index";
 import { getRedirectUrl } from "@utils/login";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 import type { AccountCredentials } from "@backend/types";
 
+import { TurnstileObject } from "turnstile-types";
+
 import "@css/Account.scss";
 import "@css/pages/LoginPage.scss";
 
 interface IProps {
     params: any;
+    turnstile: TurnstileObject;
 }
 
 interface IState {
@@ -77,6 +79,8 @@ class LoginPage extends React.Component<IProps, IState> {
             this.setState({ status: "An error occurred while logging in. Please try again later." });
             setTimeout(() => this.setState({ status: null }), 5000);
         }
+
+        this.props.turnstile.reset();
     }
 
     /**
@@ -146,4 +150,11 @@ class LoginPage extends React.Component<IProps, IState> {
     }
 }
 
-export default RouterComponent(LoginPage);
+const Wrap = (WrappedComponent: any) => (props: any) => {
+    const turnstile = useTurnstile();
+    const params = useParams();
+
+    return <WrappedComponent {...props} params={params} turnstile={turnstile} />;
+};
+
+export default Wrap(LoginPage);
