@@ -11,6 +11,7 @@ import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 import { AccountCredentials } from "@backend/types";
 
 import "@css/Account.scss";
+import TurnstileWidget from "@components/TurnstileWidget";
 
 interface SubmitData {
     username: string;
@@ -142,12 +143,7 @@ function SignupPage() {
                     </form>
                 </div>
 
-                <Turnstile
-                    theme={"dark"}
-                    appearance={"interaction-only"}
-                    sitekey={import.meta.env.VITE_TURNSTILE_KEY}
-                    onVerify={setToken}
-                />
+                <TurnstileWidget setToken={setToken} />
 
                 { error && <span className={"text-red-500 mb-2.5"}>{error}</span> }
 

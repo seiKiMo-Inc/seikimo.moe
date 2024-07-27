@@ -14,6 +14,7 @@ import { TurnstileObject } from "turnstile-types";
 
 import "@css/Account.scss";
 import "@css/pages/LoginPage.scss";
+import TurnstileWidget from "@components/TurnstileWidget";
 
 interface IProps {
     params: any;
@@ -126,12 +127,7 @@ class LoginPage extends React.Component<IProps, IState> {
                         </form>
                     </div>
 
-                    <Turnstile
-                        theme={"dark"}
-                        appearance={"interaction-only"}
-                        sitekey={import.meta.env.VITE_TURNSTILE_KEY}
-                        onVerify={(token) => this.setState({ token })}
-                    />
+                    <TurnstileWidget setToken={(token) => this.setState({ token })} />
 
                     { this.state.status && (
                         <span className={"text-red-500 mb-2.5"}>
