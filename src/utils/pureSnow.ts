@@ -42,6 +42,9 @@ let baseCss = `
 
 // Creating snowflakes
 export function spawnSnow(snowDensity = defaultDensity, snowDiv: HTMLDivElement) {
+    // Check if the snowDiv is empty.
+    if (snowDiv.children.length != 0) return;
+
     snowDensity -= 1;
 
     for (let x = 0; x < snowDensity; x++) {
