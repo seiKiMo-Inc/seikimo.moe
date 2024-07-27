@@ -100,6 +100,11 @@ function SignupPage() {
     useEffect(() => {
         spawnSnow(defaultDensity, document.getElementById("snow") as HTMLDivElement);
         spawnSnowCSS(defaultDensity, "SignupPage");
+
+        return () => {
+            document.getElementById("snow")?.remove();
+            document.getElementById("snow-css")?.remove();
+        };
     });
 
     return (
