@@ -6,11 +6,11 @@ import OrDivider from "@components/OrDivider";
 import SocialLogins from "@components/SocialLogins";
 
 import { newCall } from "@app/index";
+import { getRedirectUrl } from "@utils/login";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 import { AccountCredentials } from "@backend/types";
 
 import "@css/Account.scss";
-import { getRedirectUrl } from "@utils/login";
 
 interface SubmitData {
     username: string;
@@ -143,6 +143,8 @@ function SignupPage() {
                 </div>
 
                 <Turnstile
+                    theme={"dark"}
+                    appearance={"interaction-only"}
                     sitekey={import.meta.env.VITE_TURNSTILE_KEY}
                     onVerify={setToken}
                 />

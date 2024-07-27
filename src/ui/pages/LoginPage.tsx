@@ -127,6 +127,8 @@ class LoginPage extends React.Component<IProps, IState> {
                     </div>
 
                     <Turnstile
+                        theme={"dark"}
+                        appearance={"interaction-only"}
                         sitekey={import.meta.env.VITE_TURNSTILE_KEY}
                         onVerify={(token) => this.setState({ token })}
                     />
