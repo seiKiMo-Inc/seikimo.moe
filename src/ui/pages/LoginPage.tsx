@@ -135,7 +135,9 @@ class LoginPage extends React.Component<IProps, IState> {
                         </span>
                     )}
 
-                    <Link className={"text-sm mb-1 hover:underline"} to={"/account/signup"}>
+                    <Link className={"text-sm mb-1 hover:underline"}
+                          to={{ pathname: "/account/signup", search: location.search }}
+                    >
                         Don't have an account? Sign up!
                     </Link>
 

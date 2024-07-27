@@ -154,7 +154,9 @@ function SignupPage() {
 
                 { error && <span className={"text-red-500 mb-2.5"}>{error}</span> }
 
-                <Link className={"text-sm mb-1 hover:underline"} to={"/account/login"}>
+                <Link className={"text-sm mb-1 hover:underline"}
+                      to={{ pathname: "/account/login", search: location.search }}
+                >
                     Already have an account? Log in!
                 </Link>
 
