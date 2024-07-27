@@ -1,15 +1,17 @@
 import React from "react";
+import Turnstile from "react-turnstile";
+import { Link } from "react-router-dom";
 
-import { ReactComponent as GoogleIcon } from "@icons/google.svg";
-import { ReactComponent as DiscordIcon } from "@icons/discord.svg";
-
+import OrDivider from "@components/OrDivider";
+import SocialLogins from "@components/SocialLogins";
 import RouterComponent from "@components/common/RouterComponent";
 
-import { expectedOrigin, newCall } from "@app/index";
-import { sha256str } from "@utils/general";
+import { newCall } from "@app/index";
+import { getRedirectUrl } from "@utils/login";
 import { defaultDensity, spawnSnow, spawnSnowCSS } from "@utils/pureSnow";
 import type { AccountCredentials } from "@backend/types";
 
+import "@css/Account.scss";
 import "@css/pages/LoginPage.scss";
 
 interface IProps {
@@ -19,6 +21,8 @@ interface IProps {
 interface IState {
     username: string;
     password: string;
+    token: string;
+
     status: string | null;
 }
 
@@ -29,6 +33,7 @@ class LoginPage extends React.Component<IProps, IState> {
         this.state = {
             username: "",
             password: "",
+            token: "",
             status: null
         };
     }
@@ -41,35 +46,6 @@ class LoginPage extends React.Component<IProps, IState> {
         const appName = url.searchParams.get("app");
 
         return appName ?? this.props.params.srv ?? "Account";
-    }
-
-    /**
-     * Reads the 'redirect' query parameter.
-     * Defaults to 'seikimo.moe/'.
-     */
-    private getRedirectUrl(): string {
-        const location = window.location;
-        const url = new URLSearchParams(location.search);
-        let redirect = url.get("redirect");
-
-        // Check if the redirect is valid.
-        if (!redirect || redirect == "") return "https://seikimo.moe/";
-        if (!redirect.includes("https://") && !redirect.includes("http://"))
-            redirect = `${location.href.includes("localhost") ?
-                "http" : window.isSecureContext ? "https" : "http"}://` + redirect;
-
-        return redirect;
-    }
-
-    /**
-     * Checks if the 'handoff' query parameter is set to true.
-     * Defaults to false.
-     */
-    private handoffCode(): boolean {
-        const url = new URL(window.location.href);
-        const code = url.searchParams.get("handoff");
-
-        return code == "true";
     }
 
     /**
@@ -96,47 +72,11 @@ class LoginPage extends React.Component<IProps, IState> {
             localStorage.setItem("credentials", JSON.stringify(data));
 
             // Redirect to the redirect URL.
-            window.location.href = this.getRedirectUrl();
+            window.location.replace(getRedirectUrl());
         } catch (e) {
             this.setState({ status: "An error occurred while logging in. Please try again later." });
             setTimeout(() => this.setState({ status: null }), 5000);
         }
-    }
-
-    /**
-     * Handles logging using a social provider.
-     */
-    private socialLogin(route: string, name: string): void {
-        const url = newCall(route);
-        const authWindow = window.open(url, name, "resizable=no,toolbar=no,height=950,width=500");
-
-        // Check if the window was spawned.
-        if (authWindow == null) {
-            alert("Please allow popups for this site.");
-            return;
-        }
-
-        // Focus the window.
-        authWindow.focus();
-        // Add a message handler.
-        window.addEventListener("message", (event) => {
-            // Check the event origin.
-            if (event.origin != expectedOrigin()) return;
-
-            // Fetch the token.
-            const { username, token } = event.data;
-            if (!username || !token) return;
-
-            // Store the credentials in the local storage.
-            const credentials = JSON.stringify({ username, token });
-            localStorage.setItem("credentials", credentials);
-
-            // Encode the credentials.
-            const encoded = btoa(credentials);
-            // Redirect to the redirect URL.
-            window.location.replace(this.getRedirectUrl() +
-                (this.handoffCode() ? `?handoff=${encoded}` : ""));
-        });
     }
 
     /**
@@ -151,70 +91,55 @@ class LoginPage extends React.Component<IProps, IState> {
      * Automatically hashes the password.
      */
     private async updatePassword(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
-        this.setState({ password: await sha256str(event.target.value) });
+        this.setState({ password: event.target.value });
     }
 
     componentDidMount() {
-        window.onload = () => {
-            spawnSnow(defaultDensity, document.getElementById("snow") as HTMLDivElement);
-            spawnSnowCSS(defaultDensity, "LoginPage");
-        };
+        spawnSnow(defaultDensity, document.getElementById("snow") as HTMLDivElement);
+        spawnSnowCSS(defaultDensity, "LoginPage");
     }
 
     render() {
         return (
             <div className={"LoginPage"}>
-                <div className={"LoginPage_Background"}>
+                <div className={"background"}>
                     <div id={"snow"} />
                 </div>
 
-                <div className={"LoginPage_Container"}>
+                <div className={"Account_Container"}>
                     <div className={"LoginPage_Header"}>
                         <p>Sign in</p>
                         <p>to continue to {this.getService()}</p>
                     </div>
 
-                    <div className={"LoginPage_Form"}>
+                    <div className={"Account_Form"}>
                         <form onSubmit={this.login.bind(this)}>
                             <input type={"text"} placeholder={"Username/Email"}
                                    autoComplete={"yes"} onChange={this.updateUsername.bind(this)} />
                             <input type={"password"} placeholder={"Password"}
                                    autoComplete={"yes"} onChange={this.updatePassword.bind(this)} />
-                            <button>Log in</button>
+                            <button className={"!text-2xl !font-medium"}>Log in</button>
                         </form>
                     </div>
 
+                    <Turnstile
+                        sitekey={import.meta.env.VITE_TURNSTILE_KEY}
+                        onVerify={(token) => this.setState({ token })}
+                    />
+
                     { this.state.status && (
-                        <span className={"text-red-500"}>
+                        <span className={"text-red-500 mb-2.5"}>
                             {this.state.status}
                         </span>
                     )}
 
-                    <div className={"LoginPage_Divider"}>
-                        <div className={"LoginPage_Line"}></div>
-                        OR
-                        <div className={"LoginPage_Line"}></div>
-                    </div>
+                    <Link className={"text-sm mb-1 hover:underline"} to={"/account/signup"}>
+                        Don't have an account? Sign up!
+                    </Link>
 
-                    <div className={"LoginPage_External"}>
-                        <div className={"LoginPage_Button"}>
-                            <div className={"Align gap-[7.5px]"}
-                                 onClick={() => this.socialLogin("account/login/google", "Authenticate with Google")}
-                            >
-                                <GoogleIcon />
-                                <p>Continue with Google</p>
-                            </div>
-                        </div>
+                    <OrDivider />
 
-                        <div className={"LoginPage_Button"}>
-                            <div className={"Align gap-[5px]"}
-                                 onClick={() => this.socialLogin("account/login/discord", "Authenticate with Discord")}
-                            >
-                                <DiscordIcon />
-                                <p>Continue with Discord</p>
-                            </div>
-                        </div>
-                    </div>
+                    <SocialLogins />
                 </div>
             </div>
         );

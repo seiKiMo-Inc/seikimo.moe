@@ -6,37 +6,6 @@
     font-family: Poppins, sans-serif;
 }
 
-.LoginPage_Background {
-    @apply w-full h-full;
-
-    background-blend-mode: darken;
-    background-color: rgba(0, 0, 0, 0.5);
-    background-image: url(/wallpaper.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    filter: blur(5px);
-}
-
-.LoginPage_Container {
-    @apply flex flex-col w-full;
-    @apply absolute top-1/2 left-1/2;
-    @apply transform -translate-x-1/2 -translate-y-1/2;
-
-    width: 400px;
-    height: fit-content;
-
-    padding: 30px;
-    box-sizing: border-box;
-
-    text-align: center;
-    border-radius: 10px;
-
-    background-color: #262626;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-}
-
 .LoginPage_Header {
     @apply flex flex-col;
     @apply items-center;
@@ -58,53 +27,6 @@
     user-select: none;
 }
 
-.LoginPage_Form {
-    @apply flex flex-col;
-    @apply items-center;
-
-    input, button {
-        width: 340px;
-        height: 50px;
-
-        background-color: #1a1a1a;
-        border-radius: 5px;
-
-        padding: 10px;
-        margin-bottom: 10px;
-
-        font-weight: 500;
-        font-size: 20px;
-
-        &:focus {
-            outline: none;
-        }
-
-        user-select: none;
-    }
-
-    :nth-child(3) {
-        @apply text-2xl font-medium;
-    }
-}
-
-.LoginPage_Divider {
-    @apply flex flex-row;
-    @apply justify-between items-center;
-
-    margin-bottom: 10px;
-    font-size: 12px;
-    user-select: none;
-}
-
-.LoginPage_Line {
-    width: 150px;
-    height: 0;
-    border: 1px solid white;
-    display: inline-block;
-
-    user-select: none;
-}
-
 .LoginPage_External {
     @apply flex flex-col;
 
@@ -118,12 +40,8 @@
     width: 340px;
     height: 50px;
 
-    svg {
-        @apply w-[24.50px] h-[25px] relative;
-    }
-
     p {
-        @apply text-white text-2xl font-medium;
+        @apply text-white text-xl font-medium;
     }
 
     .Align {

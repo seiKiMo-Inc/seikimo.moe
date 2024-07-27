@@ -3,8 +3,6 @@ import ReactDOM from "react-dom/client";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { applyToWindow } from "@utils/general";
-
 import App from "@app/ui/App";
 
 /**
@@ -52,5 +50,3 @@ root.render(
     <RouterProvider router={router} />
   </React.StrictMode>
 );
-
-applyToWindow();

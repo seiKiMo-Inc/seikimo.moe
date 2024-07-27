@@ -6,6 +6,7 @@ import LandingPage from "@pages/LandingPage";
 import ChatPage from "@pages/ChatPage";
 import LoginPage from "@pages/LoginPage";
 import PastePage from "@pages/PastePage";
+import SignupPage from "@pages/SignupPage";
 import UploadPage from "@pages/UploadPage";
 import Donations from "@pages/Donations";
 import DeleteAccount from "@pages/DeleteAccount";
@@ -30,6 +31,9 @@ class App extends React.PureComponent {
                 <Route path={"/paste"} element={<PastePage />} />
                 <Route path={"/upload"} element={<UploadPage />} />
                 <Route path={"/donate"} element={<Donations />} />
+
+                <Route path={"/account/login"} element={<LoginPage />} />
+                <Route path={"/account/signup"} element={<SignupPage />} />
                 <Route path={"/account/delete"} element={<DeleteAccount />} />
 
                 <Route path={"/terms/laudiolin"} element={<LaudiolinTerms />} />
