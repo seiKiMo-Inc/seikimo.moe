@@ -107,7 +107,7 @@ function SignupPage() {
             // Clear the children of the snow div.
             snowDiv.innerHTML = "";
         };
-    });
+    }, []);
 
     return (
         <div className={"SignupPage"}>
