@@ -1,5 +1,7 @@
 import React from "react";
 
+import AppleLogin from "react-apple-login";
+
 import { ReactComponent as GoogleIcon } from "@icons/google.svg";
 import { ReactComponent as DiscordIcon } from "@icons/discord.svg";
 
@@ -56,7 +58,7 @@ interface IButtonProps {
 
 function Button(props: IButtonProps) {
     return (
-        <div className={"w-[340px] h-[50px] flex flex-row justify-center bg-zinc-900 rounded-[5px] cursor-pointer select-none"}>
+        <div className={"h-[50px] flex flex-row justify-center bg-zinc-900 rounded-[5px] cursor-pointer select-none"}>
             <div
                 onClick={props.onClick}
                 style={{ gap: props.gap }}
@@ -71,7 +73,7 @@ function Button(props: IButtonProps) {
 
 function SocialLogins() {
     return (
-        <div className={"flex flex-col gap-[10px]"}>
+        <div className={"w-[340px] flex flex-col gap-[10px]"}>
             <Button
                 gap={7.5}
                 service={"Google"}
@@ -81,12 +83,28 @@ function SocialLogins() {
             </Button>
 
             <Button
-                gap={5}
+                gap={8}
                 service={"Discord"}
                 onClick={() => socialLogin("account/login/discord", "Authenticate with Discord")}
             >
                 <DiscordIcon />
             </Button>
+
+            <AppleLogin
+                scope={"name email"}
+                render={({ onClick }) => (
+                    <Button
+                        gap={8}
+                        service={"Apple"}
+                        onClick={onClick}
+                    >
+                        <img src={"/apple.png"} alt={"Apple Icon"} className={"w-[24px]"} />
+                    </Button>
+                )}
+                usePopup={true}
+                clientId={import.meta.env.VITE_APPLE_CLIENT_ID ?? ""}
+                redirectURI={import.meta.env.VITE_APPLE_REDIRECT_URI ?? ""}
+            />
         </div>
     );
 }
