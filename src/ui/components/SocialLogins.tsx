@@ -145,7 +145,7 @@ function SocialLogins() {
                 )}
                 uiType={"dark"}
                 onSuccess={onAppleLogin}
-                onError={(error: any) => alert(error)}
+                onError={(error: any) => console.error("Error when trying to login with Apple.", error)}
             />
         </div>
     );
