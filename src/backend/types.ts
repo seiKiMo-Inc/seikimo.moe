@@ -24,6 +24,20 @@ export type AccountCredentials = {
     token: string;
 };
 
+export type AppleLoginResponse = {
+    authorization: {
+        code: string;
+        id_token: string;
+    };
+    user?: {
+        name: {
+            firstName: string;
+            lastName: string;
+        };
+        email: string;
+    };
+};
+
 export type Profile = {
     icon: string;
     displayName: string;

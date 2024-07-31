@@ -1,12 +1,13 @@
 import React from "react";
 
-import AppleLogin from "react-apple-login";
+import AppleLogin from "react-apple-signin-auth";
 
 import { ReactComponent as GoogleIcon } from "@icons/google.svg";
 import { ReactComponent as DiscordIcon } from "@icons/discord.svg";
 
 import { expectedOrigin, newCall } from "@app/index";
 import { getRedirectUrl, handoffCode } from "@utils/login";
+import type { AppleLoginResponse } from "@backend/types";
 
 import "@css/Account.scss";
 
@@ -28,6 +29,14 @@ function socialLogin(route: string, name: string): void {
 
     // Focus the window.
     authWindow.focus();
+
+    waitForLogin();
+}
+
+/**
+ * Adds an event listener which waits for a login response.
+ */
+function waitForLogin() {
     // Add a message handler.
     window.addEventListener("message", (event) => {
         // Check the event origin.
@@ -46,6 +55,34 @@ function socialLogin(route: string, name: string): void {
         // Redirect to the redirect URL.
         window.location.replace(getRedirectUrl(handoffCode() ? encoded : undefined));
     });
+}
+
+/**
+ * Invoked when the completion of an Apple login takes place.
+ *
+ * @param appleResponse The response from the Apple login.
+ */
+async function onAppleLogin(appleResponse: AppleLoginResponse) {
+    const { user, authorization: { code } } = appleResponse;
+
+    // Check if the user was specified.
+    const userEncoded = user == null ? "none" : btoa(JSON.stringify(user));
+
+    // Exchange with the backend server for a token.
+    const response = await fetch(newCall(`account/login/apple?code=${code}&user=${userEncoded}`));
+    if (response.status != 200) {
+        alert("Failed to authenticate with Apple.");
+        return;
+    }
+
+    // Store the credentials in the local storage.
+    const credentials = await response.text();
+    localStorage.setItem("credentials", credentials);
+
+    // Encode the credentials.
+    const encoded = btoa(credentials);
+    // Redirect to the redirect URL.
+    window.location.replace(getRedirectUrl(handoffCode() ? encoded : undefined));
 }
 
 interface IButtonProps {
@@ -91,19 +128,24 @@ function SocialLogins() {
             </Button>
 
             <AppleLogin
-                scope={"name email"}
-                render={({ onClick }) => (
+                authOptions={{
+                    clientId: import.meta.env.VITE_APPLE_CLIENT_ID ?? "",
+                    redirectURI: import.meta.env.VITE_APPLE_REDIRECT_URI ?? "",
+                    scope: "email name",
+                    usePopup: true
+                }}
+                render={(props: any) => (
                     <Button
+                        {...props}
                         gap={8}
                         service={"Apple"}
-                        onClick={onClick}
                     >
                         <img src={"/apple.png"} alt={"Apple Icon"} className={"w-[24px]"} />
                     </Button>
                 )}
-                usePopup={true}
-                clientId={import.meta.env.VITE_APPLE_CLIENT_ID ?? ""}
-                redirectURI={import.meta.env.VITE_APPLE_REDIRECT_URI ?? ""}
+                uiType={"dark"}
+                onSuccess={onAppleLogin}
+                onError={(error: any) => alert(error)}
             />
         </div>
     );
