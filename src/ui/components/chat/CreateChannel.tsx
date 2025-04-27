@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ReactComponent as Close } from "@icons/close.svg";
+import Close from "@icons/close.svg?react";
 
 import { closeDialog } from "@utils/general";
 

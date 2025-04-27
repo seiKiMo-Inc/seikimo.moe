@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ReactComponent as CopyIcon } from "@icons/copy-icon.svg";
+import CopyIcon from "@icons/copy-icon.svg?react";
 
 import { newCall } from "@app/index";
 

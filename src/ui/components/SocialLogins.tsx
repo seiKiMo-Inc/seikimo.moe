@@ -2,8 +2,8 @@ import React from "react";
 
 import AppleLogin from "react-apple-signin-auth";
 
-import { ReactComponent as GoogleIcon } from "@icons/google.svg";
-import { ReactComponent as DiscordIcon } from "@icons/discord.svg";
+import GoogleIcon from "@icons/google.svg?react";
+import DiscordIcon from "@icons/discord.svg?react";
 
 import { expectedOrigin, newCall } from "@app/index";
 import { getRedirectUrl, handoffCode } from "@utils/login";

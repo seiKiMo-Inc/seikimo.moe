@@ -85,7 +85,7 @@ class LandingPage extends React.Component {
     render() {
         return (
             <div className={"LandingPage"}>
-                <Navigation />
+                {/*<Navigation />*/}
 
                 <Header />
                 <Laudiolin />
@@ -93,7 +93,7 @@ class LandingPage extends React.Component {
                 <Footer />
 
                 <MusicWidget />
-                <WebChatWidget />
+                {/*<WebChatWidget />*/}
             </div>
         );
     }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ReactComponent as Hashtag } from "@icons/hashtag.svg";
+import Hashtag from "@icons/hashtag.svg?react";
 
 import { Conversation } from "@backend/proto/ChatGateway";
 

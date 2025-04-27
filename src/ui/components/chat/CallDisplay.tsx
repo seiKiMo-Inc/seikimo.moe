@@ -1,7 +1,7 @@
 import React from "react";
 
 import { BiSolidPhoneCall } from "react-icons/bi";
-import { ReactComponent as Disconnect } from "@icons/disconnect.svg";
+import Disconnect from "@icons/disconnect.svg?react";
 
 import ConversationName from "@components/chat/ConversationName";
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ReactComponent as Hashtag } from "@icons/hashtag.svg";
+import Hashtag from "@icons/hashtag.svg?react";
 
 import { formatTime } from "@utils/general";
 import { Channel as ChannelType, Message as ChatMessage } from "@backend/proto/ChatGateway";
